@@ -21,10 +21,6 @@ in
   services.xserver.desktopManager.gnome.enable = true;
   services.libinput.enable = true;
 
-  # Fractional scaling (optional; comment out if not needed)
-  programs.dconf.enable = true;
-  dconf.settings."org/gnome/mutter".experimental-features = [ "scale-monitor-framebuffer" ];
-
   # Network
   networking.networkmanager.enable = true;
 
@@ -54,6 +50,9 @@ in
   ];
 
   services.openssh.enable = true;
+
+  # When HM manages files like ~/.zshrc, back up any existing files instead of failing
+  home-manager.backupFileExtension = "backup";
 
   # Lock to first installed NixOS version on this machine
   system.stateVersion = "25.05";

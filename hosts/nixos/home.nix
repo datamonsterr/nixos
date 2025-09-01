@@ -10,60 +10,113 @@ in
 
   programs.home-manager.enable = true;
 
-  # ---- Developer Toolchain (user-scoped) ----
-
-  # Java (OpenJDK 11)
+  # ---- Toolchain & CLIs ----
   home.packages = with pkgs; [
+    # Languages / SDKs
     jdk11
     go
     python313
-    # Node package managers; installed directly (fast + reproducible)
-    pnpm
+
+    # Node & managers
+    nodejs_22
+    fnm
     yarn
-    # Useful extras
+    
+    # Tools
+    vscode
+
+    # Quality-of-life
     direnv
     nix-direnv
     starship
+    git
   ];
 
-  # Node via nvm (lets you switch versions freely)
-  programs.nvm = {
-    enable = true;
-    # Provide a default Node so new shells "just work"
-    # You can change to nodejs_20 or nodejs_18 if you need older LTS
-    nodejs = pkgs.nodejs_22;
-    # Optional: pre-create aliases or default version
-    # profile = "lts/*";
-  };
-
-  # direnv + nix-direnv for per-project envs
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
-  # Zsh + Starship prompt
+  # Zsh setup (+ fnm, corepack)
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    initExtra = ''
+    autosuggestion.enable = true;
+
+    oh-my-zsh = {
+      enable = true;
+      theme = "robbyrussell";
+      plugins = [ "git" "z" ];
+    };
+
+    initContent = ''
       eval "$(starship init zsh)"
-      # If you often use Node via nvm, ensure nvm is loaded for shells
-      if [ -s "$HOME/.nvm/nvm.sh" ]; then
-        . "$HOME/.nvm/nvm.sh"
-      fi
-      # Enable corepack (lets yarn/pnpm be managed by Node if you prefer)
-      if command -v corepack >/dev/null 2>&1; then
-        corepack enable || true
+
+      # fnm: fast Node manager (no HM module required)
+      if command -v fnm >/dev/null 2>&1; then
+        eval "$(fnm env --use-on-cd --shell zsh)"
       fi
     '';
   };
 
   programs.git = {
     enable = true;
-    userName = "datamonsterr";
-    userEmail = "phamthanhdat17092004@gmail.com";
+    userName = "Your Name";
+    userEmail = "you@example.com";
+  };
+
+  programs.ssh = {
+    enable = true;
+
+    matchBlocks = {
+      "github-datamonsterr" = {
+        hostname = "github.com";
+        identityFile = "~/.ssh/id_ed25519_datamonsterr";
+        user = "git";
+      };
+
+      "github-nuoa" = {
+        hostname = "github.com";
+        identityFile = "~/.ssh/id_ed25519_nuoa";
+        user = "git";
+      };
+    };
+  };
+
+  # Neovim: source your repo into ~/.config/nvim so it's identical to the linked setup
+  programs.neovim = {
+    enable = true;
+  package = pkgs.neovim-unwrapped;
+    viAlias = true;
+    vimAlias = true;
+    defaultEditor = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  # Your older .zshrc PATH/env equivalents
+  home.sessionVariables = {
+    GOPATH = "$HOME/go";
+    GOBIN  = "$HOME/go/bin";
+  };
+
+  home.sessionPath = [
+    "$HOME/bin"
+    "/usr/local/bin"
+    "$HOME/.local/bin"
+    "$HOME/go/bin"
+  ];
+
+  # GNOME fractional scaling (Home-Manager owns dconf)
+  dconf.settings = {
+    "org/gnome/mutter" = {
+      experimental-features = [ "scale-monitor-framebuffer" ];
+    };
+  };
+
+  # --- Neovim config for vscode-neovim ---
+  # Sync the repo folder hosts/nixos/nvim to ~/.config/nvim for clean management
+  xdg.configFile."nvim" = {
+  source = ./config/nvim;
+    recursive = true;
   };
 }

@@ -30,6 +30,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # Back up existing dotfiles instead of failing activation
+            home-manager.backupFileExtension = "backup";
             home-manager.users.${username} = import ./hosts/${hostname}/home.nix;
           }
         ];

@@ -21,6 +21,11 @@ in
   services.xserver.desktopManager.gnome.enable = true;
   services.libinput.enable = true;
 
+  # Keyboard: swap Caps Lock and Escape everywhere
+  services.xserver.xkb.options = "caps:swapescape";
+  # Apply the same XKB config on the Linux console (TTYs)
+  console.useXkbConfig = true;
+
   # Network
   networking.networkmanager.enable = true;
 

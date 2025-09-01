@@ -111,6 +111,11 @@ in
     "org/gnome/mutter" = {
       experimental-features = [ "scale-monitor-framebuffer" ];
     };
+
+    # Swap Caps Lock and Escape in GNOME (Wayland-aware)
+    "org/gnome/desktop/input-sources" = {
+      xkb-options = [ "caps:swapescape" ];
+    };
   };
 
   # --- Neovim config for vscode-neovim ---

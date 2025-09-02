@@ -60,9 +60,12 @@ in
   # User
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "nixos-config" ];
     shell = pkgs.zsh;
   };
+
+  # Group with write access to /etc/nixos for non-root git operations
+  users.groups."nixos-config" = {};
 
   # Shell & essentials
   programs.zsh.enable = true;
@@ -85,6 +88,27 @@ in
   environment.systemPackages = with pkgs; [
     git wget curl vim gnome-tweaks
   ];
+
+  # Ensure /etc/nixos is group-writable by nixos-config and new files inherit perms
+  system.activationScripts.nixosEtcWritable = {
+    deps = [ ];
+    text = ''
+      set -eu
+      dir=/etc/nixos
+      if [ -d "$dir" ]; then
+        # Change group recursively (ignore errors on special files)
+        ${pkgs.coreutils}/bin/chgrp -R nixos-config "$dir" || true
+        # Group read/write on everything; execute on dirs and already-exec files
+        ${pkgs.coreutils}/bin/chmod -R g+rwX "$dir" || true
+        # Ensure setgid on directories so new files/dirs inherit the group
+        ${pkgs.findutils}/bin/find "$dir" -type d -exec ${pkgs.coreutils}/bin/chmod g+s {} + || true
+        # Set default ACL on directories so new files get group rw by default
+        ${pkgs.findutils}/bin/find "$dir" -type d -exec ${pkgs.acl}/bin/setfacl -m d:g:nixos-config:rwX {} + || true
+        # Also ensure current files have group rw via ACL (harmless if already set by chmod)
+        ${pkgs.acl}/bin/setfacl -R -m g:nixos-config:rwX "$dir" || true
+      fi
+    '';
+  };
 
   services.openssh.enable = true;
 

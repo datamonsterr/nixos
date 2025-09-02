@@ -17,10 +17,31 @@ in {
   networking.hostName = hostname;
   time.timeZone = "Asia/Ho_Chi_Minh";
 
-  # Desktop & input (GNOME)
+  # Desktop & input (i3 via GDM)
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.windowManager.i3 = {
+    enable = true;
+    package = pkgs.i3-gaps;
+    extraPackages = with pkgs; [
+      dmenu
+      rofi
+      rofi-emoji
+      dunst
+      picom
+      polybarFull
+      (haskellPackages.greenclip)
+      xautolock
+      i3lock
+      betterlockscreen
+      pavucontrol
+      flameshot
+      xorg.xkill
+  # Provide an i3exit-compatible script from assets/script/i3exit
+  (pkgs.writeShellScriptBin "i3exit" (builtins.readFile ../assets/script/i3exit))
+    ];
+  };
   services.libinput.enable = true;
 
   # Keyboard: swap Caps Lock and Escape everywhere
@@ -104,6 +125,17 @@ in {
     curl
     vim
     gnome-tweaks
+    psmisc # killall for polybar launch script
+    xorg.xrandr # xrandr used in i3 config
+    libnotify # notify-send
+  ];
+
+  # Fonts: Nerd Fonts (Fira Code) + extras for Polybar/icons (25.05 uses pkgs.nerd-fonts.*)
+  fonts.packages = with pkgs; [
+    nerd-fonts.fira-code
+    font-awesome
+    unifont
+    siji
   ];
 
   # Ensure /etc/nixos is group-writable by nixos-config and new files inherit perms

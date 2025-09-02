@@ -1,0 +1,45 @@
+[global]
+    monitor = 0
+    follow = keyboard
+    geometry = "300x10-10+35"
+    indicate_hidden = yes
+    shrink = yes
+    transparency = 20
+    notification_height = 0
+    separator_height = 2
+    padding = 8
+    horizontal_padding = 8
+    frame_width = 2
+    frame_color = "#303446"
+    separator_color = auto
+
+    font = Fira Code 15
+
+    markup = full
+    format = "%s\n%b"
+
+    alignment = left
+    show_age_threshold = 120
+    word_wrap = yes
+    ignore_newline = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+
+    idle_threshold = 120
+    show_indicators = yes
+
+[urgency_low]
+    background = "#232634"
+    foreground = "#c6d0f5"
+    timeout = 4
+
+[urgency_normal]
+    background = "#232634"
+    foreground = "#c6d0f5"
+    timeout = 6
+
+[urgency_critical]
+    background = "#ea999c"
+    foreground = "#303446"
+    frame_color = "#ea999c"
+    timeout = 0

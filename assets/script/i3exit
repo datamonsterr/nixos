@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cmd="${1:-}"
+
+case "$cmd" in
+  lock)
+    if command -v betterlockscreen >/dev/null 2>&1; then
+      betterlockscreen -l blur || betterlockscreen -l
+    elif command -v i3lock >/dev/null 2>&1; then
+      i3lock -c 000000
+    else
+      command -v notify-send >/dev/null 2>&1 && notify-send "No screen locker installed"
+    fi
+    ;;
+  logout)
+    i3-msg exit
+    ;;
+  switch_user)
+    # Try GDM greeter via gdbus if available; fallback to LightDM or lock session
+    if command -v gdbus >/dev/null 2>&1; then
+      gdbus call \
+        --system \
+        --dest org.gnome.DisplayManager \
+        --object-path /org/gnome/DisplayManager/Seat0 \
+        --method org.gnome.DisplayManager.Seat.SwitchToGreeter \
+        >/dev/null 2>&1 || true
+    elif command -v dm-tool >/dev/null 2>&1; then
+      dm-tool switch-to-greeter || true
+    else
+      loginctl lock-session || true
+    fi
+    ;;
+  hibernate)
+    systemctl hibernate
+    ;;
+  reboot)
+    systemctl reboot
+    ;;
+  shutdown)
+    systemctl poweroff
+    ;;
+  *)
+    echo "Usage: i3exit {lock|logout|switch_user|hibernate|reboot|shutdown}" >&2
+    exit 1
+    ;;
+esac

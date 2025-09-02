@@ -1,0 +1,6 @@
+font-family = "FiraCode Nerd Font"
+font-size = 18
+background-opacity = 0.8
+window-decoration = false
+cursor-style = bar
+confirm-close-surface = false

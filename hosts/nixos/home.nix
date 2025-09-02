@@ -65,6 +65,17 @@ in {
     # Tools
     vscode
     awscli2
+    tmux
+    ghostty
+    pcmanfm
+    rofi
+    rofi-emoji
+    dunst
+    pavucontrol
+    flameshot
+    google-chrome
+    # polybar script deps (align with python313 to avoid conflicts)
+    python313Packages.i3ipc
 
     # Containers
     docker
@@ -162,6 +173,12 @@ in {
   home.sessionVariables = {
     GOPATH = "$HOME/go";
     GOBIN = "$HOME/go/bin";
+    # DPI and scaling for i3 session
+    GDK_SCALE = "2";
+    GDK_DPI_SCALE = "2";
+    QT_SCALE_FACTOR = "2";
+    QT_FONT_DPI = "144";
+    XFT_DPI = "144";
   };
 
   home.sessionPath = [
@@ -247,6 +264,35 @@ in {
     source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/nvim";
     recursive = true;
   };
+
+  # i3 WM configuration
+  xdg.configFile."i3/config" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/i3/config";
+  };
+
+  # Polybar configuration
+  xdg.configFile."polybar" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/polybar";
+    recursive = true;
+  };
+
+  # Dunst notifications
+  xdg.configFile."dunst/dunstrc" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/dunst/dunstrc";
+  };
+
+  # Ghostty terminal config
+  xdg.configFile."ghostty/config" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/ghostty/config";
+  };
+
+  # tmux config
+  home.file.".tmux.conf" = {
+    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/tmux/tmux.conf";
+  };
+
+  # Start dunst on login (i3 doesn't autostart it by default in your config)
+  services.dunst.enable = true;
 
   # AWS CLI v2 SSO configuration managed by Home Manager
   # Replace the example values below with your organization settings.

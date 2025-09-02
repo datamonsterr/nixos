@@ -26,6 +26,24 @@ in
   # Apply the same XKB config on the Linux console (TTYs)
   console.useXkbConfig = true;
 
+  # Input Method: fcitx5 + Unikey (Vietnamese Telex)
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5 = {
+      # IM modules for GTK/Qt apps and config GUI
+      addons = with pkgs; [
+        fcitx5-unikey
+        fcitx5-gtk
+        (libsForQt5.fcitx5-qt)
+        (qt6Packages.fcitx5-qt)
+        fcitx5-configtool
+      ];
+      # Wayland frontend is optional; GNOME Wayland primarily uses GTK/Qt IM modules
+      # waylandFrontend = false; # default
+    };
+  };
+
   # Network
   networking.networkmanager.enable = true;
 
@@ -48,7 +66,21 @@ in
 
   # Shell & essentials
   programs.zsh.enable = true;
-  programs.firefox.enable = true;
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox-devedition-bin;
+
+    policies = {
+      DisableTelemetry = true;
+      DisableFirefoxStudies = true;
+      ExtensionSettings = {
+        "uBlock0@raymondhill.net" = {
+          installation_mode = "allowed";
+          private_browsing  = true;
+        };
+      };
+    };
+  };
 
   environment.systemPackages = with pkgs; [
     git wget curl vim gnome-tweaks

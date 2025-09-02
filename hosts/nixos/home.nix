@@ -1,9 +1,11 @@
-{ config, pkgs, lib, ... }:
-
-let
-  username = "dat";
-in
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  username = "dat";
+in {
   home.username = username;
   home.homeDirectory = "/home/${username}";
   home.stateVersion = "25.05";
@@ -15,7 +17,7 @@ in
     enable = true;
     type = "fcitx5";
     fcitx5 = {
-      addons = with pkgs; [ fcitx5-unikey ];
+      addons = with pkgs; [fcitx5-unikey];
       # Prefer using IM modules; still set env for broad compatibility (Xwayland/legacy)
       settings = {
         # Default input methods order: US keyboard first, then Unikey
@@ -59,18 +61,26 @@ in
     nodejs_22
     fnm
     yarn
-    
+
     # Tools
     vscode
+    awscli2
+
+    # Containers
+    docker
+    lazydocker
+    docker-compose
+    docker-buildx
+    dive
 
     # Quality-of-life
     direnv
     nix-direnv
     starship
-  git
+    git
 
-  # Fonts
-  fira-code
+    # Fonts
+    fira-code
   ];
 
   # Zsh setup (+ fnm, corepack)
@@ -83,7 +93,7 @@ in
     oh-my-zsh = {
       enable = true;
       theme = "robbyrussell";
-      plugins = [ "git" "z" ];
+      plugins = ["git" "z"];
     };
 
     initContent = ''
@@ -129,6 +139,20 @@ in
     defaultEditor = true;
   };
 
+  # VS Code + Docker extension (GUI for Docker inside VS Code)
+  programs.vscode = {
+    enable = true;
+    # Ensure we use the same VS Code package already installed above
+    package = pkgs.vscode;
+    profiles = {
+      "default" = {
+        extensions = with pkgs.vscode-extensions; [
+          ms-azuretools.vscode-docker
+        ];
+      };
+    };
+  };
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -137,7 +161,7 @@ in
   # Your older .zshrc PATH/env equivalents
   home.sessionVariables = {
     GOPATH = "$HOME/go";
-    GOBIN  = "$HOME/go/bin";
+    GOBIN = "$HOME/go/bin";
   };
 
   home.sessionPath = [
@@ -150,12 +174,12 @@ in
   # GNOME fractional scaling (Home-Manager owns dconf)
   dconf.settings = {
     "org/gnome/mutter" = {
-      experimental-features = [ "scale-monitor-framebuffer" ];
+      experimental-features = ["scale-monitor-framebuffer"];
     };
 
     # Swap Caps Lock and Escape in GNOME (Wayland-aware)
     "org/gnome/desktop/input-sources" = {
-      xkb-options = [ "caps:swapescape" ];
+      xkb-options = ["caps:swapescape"];
     };
 
     # Theme, dark mode, and UI scale
@@ -222,6 +246,25 @@ in
   xdg.configFile."nvim" = {
     source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/nvim";
     recursive = true;
+  };
+
+  # AWS CLI v2 SSO configuration managed by Home Manager
+  # Replace the example values below with your organization settings.
+  home.file.".aws/config" = {
+    text = ''
+      [sso-session nuoa]
+      sso_start_url = https://nuoa.awsapps.com/start
+      sso_region = us-east-1
+      sso_registration_scopes = sso:account:access
+
+      [profile nuoa-beta]
+      sso_session = nuoa
+      sso_account_id = 070888215368
+      sso_role_name = AdministratorAccess
+      region = ap-southeast-1
+      output = json
+    '';
+    force = true;
   };
 
   # Ensure fontconfig is configured at the user level so installed fonts are discoverable

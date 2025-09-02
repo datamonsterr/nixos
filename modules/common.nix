@@ -1,12 +1,14 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   hostname = "nixos";
   username = "dat";
-in
-{
+in {
   # Flakes on, everywhere
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Allow unfree if you ever need it (Chrome, etc.)
   nixpkgs.config.allowUnfree = true;
@@ -54,13 +56,24 @@ in
     pulse.enable = true;
   };
 
+  # Containers: Docker daemon
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = true;
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+      flags = ["--all"];
+    };
+  };
+
   # Weekly SSD TRIM
   services.fstrim.enable = true;
 
   # User
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "nixos-config" ];
+    extraGroups = ["wheel" "networkmanager" "nixos-config" "docker"];
     shell = pkgs.zsh;
   };
 
@@ -71,7 +84,7 @@ in
   programs.zsh.enable = true;
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-devedition-bin;
+    package = pkgs.firefox-devedition;
 
     policies = {
       DisableTelemetry = true;
@@ -79,19 +92,23 @@ in
       ExtensionSettings = {
         "uBlock0@raymondhill.net" = {
           installation_mode = "allowed";
-          private_browsing  = true;
+          private_browsing = true;
         };
       };
     };
   };
 
   environment.systemPackages = with pkgs; [
-    git wget curl vim gnome-tweaks
+    git
+    wget
+    curl
+    vim
+    gnome-tweaks
   ];
 
   # Ensure /etc/nixos is group-writable by nixos-config and new files inherit perms
   system.activationScripts.nixosEtcWritable = {
-    deps = [ ];
+    deps = [];
     text = ''
       set -eu
       dir=/etc/nixos

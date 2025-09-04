@@ -1,0 +1,25 @@
+! HiDPI scaling configuration (144 DPI = 1.5x scaling)
+Xft.dpi: 144
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+Xft.autohint: false
+
+! Cursor scaling
+Xcursor.size: 48
+
+! Terminal font settings
+URxvt.font: xft:FiraCode Nerd Font:size=12:antialias=true
+URxvt.boldFont: xft:FiraCode Nerd Font:bold:size=12:antialias=true
+
+! Better font rendering for legacy X11 applications
+*antialias: true
+*hinting: true
+*hintstyle: hintslight
+*rgba: rgb
+*lcdfilter: lcddefault
+
+! Fix font rendering for older applications
+*.font: xft:FiraCode Nerd Font:size=12

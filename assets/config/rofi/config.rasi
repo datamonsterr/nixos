@@ -1,0 +1,21 @@
+configuration {
+    font: "Fira Code NF 17";
+    show-icons: true;
+    icon-theme: "Papirus";
+    display-drun: "Applications";
+    display-run: "Run";
+    display-window: "Windows";
+    display-emoji: "Emoji";
+    display-clipboard: "Clipboard";
+    drun-display-format: "{name}";
+    disable-history: false;
+    fullscreen: false;
+    hide-scrollbar: true;
+    sidebar-mode: false;
+    terminal: "ghostty";
+    ssh-client: "ssh";
+    ssh-command: "{terminal} -e {ssh-client} {host}";
+    run-shell-command: "{terminal} -e {cmd}";
+}
+
+@theme "~/.config/rofi/theme.rasi"

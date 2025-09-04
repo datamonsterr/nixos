@@ -59,12 +59,12 @@ in {
 
     # Node & managers
     nodejs_22
-    fnm
     yarn
 
     # Tools
     vscode
     awscli2
+    aws-sam-cli
     tmux
     ghostty
     pcmanfm
@@ -73,7 +73,9 @@ in {
     dunst
     pavucontrol
     flameshot
-    google-chrome
+    postman
+    maven
+
     # polybar script deps (align with python313 to avoid conflicts)
     python313Packages.i3ipc
 
@@ -90,11 +92,17 @@ in {
     starship
     git
 
+    # Background/wallpaper
+    nitrogen
+
     # Fonts
     fira-code
+    
+    # Node pkg
+    nodePackages.typescript
+    nodePackages.mermaid-cli
   ];
 
-  # Zsh setup (+ fnm, corepack)
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -109,18 +117,13 @@ in {
 
     initContent = ''
       eval "$(starship init zsh)"
-
-      # fnm: fast Node manager (no HM module required)
-      if command -v fnm >/dev/null 2>&1; then
-        eval "$(fnm env --use-on-cd --shell zsh)"
-      fi
     '';
   };
 
   programs.git = {
     enable = true;
-    userName = "Your Name";
-    userEmail = "you@example.com";
+    userName = "datamonsterr";
+    userEmail = "phamthanhdat17092004@gmail.com";
   };
 
   programs.ssh = {
@@ -173,12 +176,33 @@ in {
   home.sessionVariables = {
     GOPATH = "$HOME/go";
     GOBIN = "$HOME/go/bin";
-    # DPI and scaling for i3 session
-    GDK_SCALE = "2";
-    GDK_DPI_SCALE = "2";
-    QT_SCALE_FACTOR = "2";
+    # GTK HiDPI scaling
+    GDK_SCALE = "1";          # must be integer
+    GDK_DPI_SCALE = "1.5";    # fractional text/UI scale
+
+    # Qt HiDPI scaling
+    QT_AUTO_SCREEN_SCALE_FACTOR = "0";
+    QT_SCALE_FACTOR = "1.5";
     QT_FONT_DPI = "144";
-    XFT_DPI = "144";
+    
+    # Cursor size for X11/i3 and Wayland (48 = 2x scale)
+    XCURSOR_SIZE = "48";
+    
+    # Better font rendering for applications
+    FREETYPE_PROPERTIES = "truetype:interpreter-version=38";
+  };
+  
+  xresources.properties = {
+    # 150% of 96 DPI → crisp fonts in X apps
+    "Xft.dpi" = "144";
+    "Xft.antialias" = "true";
+    "Xft.hinting" = "true";
+    "Xft.hintstyle" = "hintslight";
+    "Xft.rgba" = "rgb";
+    "Xft.lcdfilter" = "lcddefault";
+    "Xft.autohint" = "false";
+    # 2x cursor size for X11/i3
+    "Xcursor.size" = "48";
   };
 
   home.sessionPath = [
@@ -204,6 +228,7 @@ in {
       accent-color = "teal";
       color-scheme = "prefer-dark";
       text-scaling-factor = 1.25;
+      cursor-size = 48;  # 2x scale (default is 24)
     };
 
     # Desktop and lock screen backgrounds
@@ -260,57 +285,96 @@ in {
     };
   };
 
-  xdg.configFile."nvim" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/nvim";
-    recursive = true;
+  xdg.configFile = {
+    nvim = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/nvim";
+      recursive = true;
+    };
+
+    "i3/config" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/i3/config";
+    };
+
+    "polybar" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/polybar";
+      recursive = true;
+    };
+
+    "dunst/dunstrc" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/dunst/dunstrc";
+    };
+
+    "ghostty/config" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/ghostty/config";
+    };
+
+    "rofi" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/rofi";
+      recursive = true;
+    };
   };
 
-  # i3 WM configuration
-  xdg.configFile."i3/config" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/i3/config";
+  # Default applications (XDG MIME associations)
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      # Browsing
+      "x-scheme-handler/http" = "firefox-developer-edition.desktop";
+      "x-scheme-handler/https" = "firefox-developer-edition.desktop";
+
+      # Text & code
+      "text/plain" = "code.desktop";
+
+      # File manager
+      "inode/directory" = "pcmanfm.desktop";
+
+      "application/pdf" = "firefox-developer-edition.desktop";
+    };
   };
 
-  # Polybar configuration
-  xdg.configFile."polybar" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/polybar";
-    recursive = true;
+  # Home files configuration
+  home.file = {
+    ".tmux.conf" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/tmux/tmux.conf";
+    };
+
+    "bin/random-wallpaper" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/script/random-wallpaper.sh";
+    };
+
+    ".aws/config" = {
+      text = ''
+        [sso-session nuoa32]
+        sso_start_url = https://nuoa.awsapps.com/start
+        sso_region = us-east-1
+        sso_registration_scopes = sso:account:access
+
+        [profile nuoa-beta]
+        sso_session = nuoa
+        sso_account_id = 070888215368
+        sso_role_name = AdministratorAccess
+        region = ap-southeast-1
+        output = json
+      '';
+      force = true;
+    };
   };
 
-  # Dunst notifications
-  xdg.configFile."dunst/dunstrc" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/dunst/dunstrc";
+  # Services configuration
+  services = {
+    # Start dunst on login (i3 doesn't autostart it by default in your config)
+    dunst.enable = true;
   };
 
-  # Ghostty terminal config
-  xdg.configFile."ghostty/config" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/ghostty/config";
-  };
-
-  # tmux config
-  home.file.".tmux.conf" = {
-    source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/tmux/tmux.conf";
-  };
-
-  # Start dunst on login (i3 doesn't autostart it by default in your config)
-  services.dunst.enable = true;
-
-  # AWS CLI v2 SSO configuration managed by Home Manager
-  # Replace the example values below with your organization settings.
-  home.file.".aws/config" = {
-    text = ''
-      [sso-session nuoa]
-      sso_start_url = https://nuoa.awsapps.com/start
-      sso_region = us-east-1
-      sso_registration_scopes = sso:account:access
-
-      [profile nuoa-beta]
-      sso_session = nuoa
-      sso_account_id = 070888215368
-      sso_role_name = AdministratorAccess
-      region = ap-southeast-1
-      output = json
+  # X11 session configuration
+  xsession = {
+    enable = true;
+    initExtra = ''
+      # Configure reverse/natural scrolling for all mice
+      for device in $(xinput list | grep -i mouse | grep -v "Virtual core" | sed 's/.*id=\([0-9]*\).*/\1/'); do
+        xinput set-button-map "$device" 1 2 3 5 4 6 7 8 9
+      done
     '';
-    force = true;
   };
 
   # Ensure fontconfig is configured at the user level so installed fonts are discoverable

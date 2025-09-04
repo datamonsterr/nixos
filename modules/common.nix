@@ -38,8 +38,8 @@ in {
       pavucontrol
       flameshot
       xorg.xkill
-  # Provide an i3exit-compatible script from assets/script/i3exit
-  (pkgs.writeShellScriptBin "i3exit" (builtins.readFile ../assets/script/i3exit))
+      # Provide an i3exit-compatible script from assets/script/i3exit
+      (pkgs.writeShellScriptBin "i3exit" (builtins.readFile ../assets/script/i3exit))
     ];
   };
   services.libinput.enable = true;
@@ -69,6 +69,7 @@ in {
 
   # Network
   networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.backend = "wpa_supplicant";
 
   # Sound (PipeWire)
   services.pipewire = {
@@ -137,6 +138,25 @@ in {
     unifont
     siji
   ];
+
+  # Font configuration for better rendering
+  fonts.fontconfig = {
+    enable = true;
+    antialias = true;
+    hinting = {
+      enable = true;
+      style = "full";
+    };
+    subpixel = {
+      rgba = "rgb";
+      lcdfilter = "default";
+    };
+    defaultFonts = {
+      serif = ["DejaVu Serif"];
+      sansSerif = ["DejaVu Sans"];
+      monospace = ["FiraCode Nerd Font"];
+    };
+  };
 
   # Ensure /etc/nixos is group-writable by nixos-config and new files inherit perms
   system.activationScripts.nixosEtcWritable = {

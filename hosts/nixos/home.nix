@@ -35,8 +35,13 @@ in {
         };
         globalOptions = {
           Hotkey = {
-            # Enable switch with trigger keys like Ctrl+Space
-            EnumerateWithTriggerKeys = true;
+            # Disable automatic trigger keys - we'll use i3 hotkey instead
+            EnumerateWithTriggerKeys = false;
+            # Clear all trigger keys
+            TriggerKeys = "";
+            # Also clear enumerate keys
+            EnumerateForwardKeys = "";
+            EnumerateBackwardKeys = "";
           };
         };
         addons = {
@@ -75,6 +80,7 @@ in {
     flameshot
     postman
     maven
+    zathura
 
     # polybar script deps (align with python313 to avoid conflicts)
     python313Packages.i3ipc
@@ -271,6 +277,7 @@ in {
         "org.gnome.Nautilus.desktop"
         "code.desktop"
         "firefox.desktop"
+        "thunderbird.desktop"
       ];
     };
 
@@ -317,6 +324,10 @@ in {
       source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/rofi";
       recursive = true;
     };
+
+    "zathura/zathurarc" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/zathura/zathurarc";
+    };
   };
 
   # Default applications (XDG MIME associations)
@@ -333,7 +344,7 @@ in {
       # File manager
       "inode/directory" = "pcmanfm.desktop";
 
-      "application/pdf" = "firefox.desktop";
+      "application/pdf" = "org.pwmt.zathura.desktop";
     };
   };
 

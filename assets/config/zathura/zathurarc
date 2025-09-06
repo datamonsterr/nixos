@@ -1,0 +1,48 @@
+# Zathura configuration file
+
+# Color scheme (dark theme)
+set default-bg                 "#1e1e1e"
+set default-fg                 "#d4d4d4"
+
+set statusbar-bg               "#1e1e1e"
+set statusbar-fg               "#d4d4d4"
+
+set inputbar-bg                "#1e1e1e"
+set inputbar-fg                "#d4d4d4"
+
+set notification-error-bg      "#f14c4c"
+set notification-error-fg      "#1e1e1e"
+
+set notification-warning-bg    "#ffb86c"
+set notification-warning-fg    "#1e1e1e"
+
+set highlight-color            "#ffb86c"
+set highlight-active-color     "#ff79c6"
+
+set completion-highlight-fg    "#1e1e1e"
+set completion-highlight-bg    "#bd93f9"
+
+set completion-bg              "#1e1e1e"
+set completion-fg              "#d4d4d4"
+
+set recolor-lightcolor         "#1e1e1e"
+set recolor-darkcolor          "#d4d4d4"
+set recolor                    "true"
+
+# Settings
+set adjust-open                "best-fit"
+set pages-per-row              1
+set scroll-page-aware          "true"
+set scroll-full-overlap        0.01
+set scroll-step                50
+set zoom-min                   10
+set guioptions                 none
+
+# Key bindings
+map <C-i> recolor
+map r reload
+map R rotate
+map K zoom in
+map J zoom out
+map i set recolor
+map p print

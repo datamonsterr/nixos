@@ -63,6 +63,9 @@ bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 bindsym Caps_Lock exec notify-send "CapsLock is Pressed"
 bindsym $mod+Shift+w exec --no-startup-id /etc/nixos/assets/script/random-wallpaper.sh
 
+# Input method toggle (fcitx5)
+bindsym $mod+z exec --no-startup-id "fcitx5-remote -t && notify-send 'Input Method' 'Toggled input method'"
+
 # Function Keys (Laptop Hardware Keys)
 # Volume controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && notify-send "Volume: $(pamixer --get-volume)%"

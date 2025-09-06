@@ -97,7 +97,7 @@ in {
 
     # Fonts
     fira-code
-    
+
     # Node pkg
     nodePackages.typescript
     nodePackages.mermaid-cli
@@ -182,21 +182,21 @@ in {
     GOPATH = "$HOME/go";
     GOBIN = "$HOME/go/bin";
     # GTK HiDPI scaling
-    GDK_SCALE = "1";          # must be integer
-    GDK_DPI_SCALE = "1.5";    # fractional text/UI scale
+    GDK_SCALE = "1"; # must be integer
+    GDK_DPI_SCALE = "1.5"; # fractional text/UI scale
 
     # Qt HiDPI scaling
     QT_AUTO_SCREEN_SCALE_FACTOR = "0";
     QT_SCALE_FACTOR = "1.5";
     QT_FONT_DPI = "144";
-    
+
     # Cursor size for X11/i3 and Wayland (48 = 2x scale)
     XCURSOR_SIZE = "48";
-    
+
     # Better font rendering for applications
     FREETYPE_PROPERTIES = "truetype:interpreter-version=38";
   };
-  
+
   xresources.properties = {
     # 150% of 96 DPI → crisp fonts in X apps
     "Xft.dpi" = "144";
@@ -233,7 +233,7 @@ in {
       accent-color = "teal";
       color-scheme = "prefer-dark";
       text-scaling-factor = 1.25;
-      cursor-size = 48;  # 2x scale (default is 24)
+      cursor-size = 48; # 2x scale (default is 24)
     };
 
     # Desktop and lock screen backgrounds

@@ -51,7 +51,7 @@ in {
   # Enable ACPI support for laptop function keys
   services.acpid.enable = true;
   services.upower.enable = true;
-  
+
   # Enable brightness control for users
   programs.light.enable = true;
 

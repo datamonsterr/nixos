@@ -53,7 +53,7 @@ bindsym $mod+t exec rofi -show window
 bindsym $mod+v exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 
 # Start Applications
-bindsym $mod+F1 exec firefox-devedition https://calendar.google.com
+bindsym $mod+F1 exec firefox https://calendar.google.com
 bindsym $mod+F2 exec pcmanfm
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
 bindsym Print --release exec "flameshot screen -p ~/Pictures/screenshots/"
@@ -63,6 +63,21 @@ bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 bindsym Caps_Lock exec notify-send "CapsLock is Pressed"
 bindsym $mod+Shift+w exec --no-startup-id /etc/nixos/assets/script/random-wallpaper.sh
 
+# Function Keys (Laptop Hardware Keys)
+# Volume controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && notify-send "Volume: $(pamixer --get-volume)%"
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5 && notify-send "Volume: $(pamixer --get-volume)%"
+bindsym XF86AudioMute exec --no-startup-id pamixer -t && notify-send "Volume: $(pamixer --get-volume-human)"
+
+# Brightness controls
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +10% && notify-send "Brightness: $(brightnessctl get)%"
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 10%- && notify-send "Brightness: $(brightnessctl get)%"
+
+# Media controls
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioStop exec --no-startup-id playerctl stop
 
 # change focus
 bindsym $mod+h focus left

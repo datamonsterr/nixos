@@ -38,11 +38,22 @@ in {
       pavucontrol
       flameshot
       xorg.xkill
+      # Tools for function keys
+      brightnessctl
+      pamixer
+      playerctl
       # Provide an i3exit-compatible script from assets/script/i3exit
       (pkgs.writeShellScriptBin "i3exit" (builtins.readFile ../assets/script/i3exit))
     ];
   };
   services.libinput.enable = true;
+
+  # Enable ACPI support for laptop function keys
+  services.acpid.enable = true;
+  services.upower.enable = true;
+  
+  # Enable brightness control for users
+  programs.light.enable = true;
 
   # Keyboard: swap Caps Lock and Escape everywhere
   services.xserver.xkb.options = "caps:swapescape";
@@ -95,7 +106,7 @@ in {
   # User
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "nixos-config" "docker"];
+    extraGroups = ["wheel" "networkmanager" "nixos-config" "docker" "video" "audio"];
     shell = pkgs.zsh;
   };
 
@@ -106,7 +117,7 @@ in {
   programs.zsh.enable = true;
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-devedition;
+    package = pkgs.firefox;
 
     policies = {
       DisableTelemetry = true;

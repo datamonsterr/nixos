@@ -172,6 +172,11 @@ in {
     nix-direnv.enable = true;
   };
 
+  programs.firefox = {
+    enable = true;
+    package = pkgs.firefox;
+  };
+
   # Your older .zshrc PATH/env equivalents
   home.sessionVariables = {
     GOPATH = "$HOME/go";
@@ -202,7 +207,7 @@ in {
     "Xft.lcdfilter" = "lcddefault";
     "Xft.autohint" = "false";
     # 2x cursor size for X11/i3
-    "Xcursor.size" = "48";
+    "Xcursor.size" = "96";
   };
 
   home.sessionPath = [
@@ -265,7 +270,7 @@ in {
         "org.gnome.Console.desktop"
         "org.gnome.Nautilus.desktop"
         "code.desktop"
-        "firefox-developer-edition.desktop"
+        "firefox.desktop"
       ];
     };
 
@@ -319,8 +324,8 @@ in {
     enable = true;
     defaultApplications = {
       # Browsing
-      "x-scheme-handler/http" = "firefox-developer-edition.desktop";
-      "x-scheme-handler/https" = "firefox-developer-edition.desktop";
+      "x-scheme-handler/http" = "firefox.desktop";
+      "x-scheme-handler/https" = "firefox.desktop";
 
       # Text & code
       "text/plain" = "code.desktop";
@@ -328,7 +333,7 @@ in {
       # File manager
       "inode/directory" = "pcmanfm.desktop";
 
-      "application/pdf" = "firefox-developer-edition.desktop";
+      "application/pdf" = "firefox.desktop";
     };
   };
 

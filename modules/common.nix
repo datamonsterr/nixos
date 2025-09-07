@@ -4,7 +4,6 @@
   lib,
   ...
 }: let
-  hostname = "nixos";
   username = "dat";
 in {
   # Flakes on, everywhere
@@ -13,77 +12,14 @@ in {
   # Allow unfree if you ever need it (Chrome, etc.)
   nixpkgs.config.allowUnfree = true;
 
-  # Host & timezone
-  networking.hostName = hostname;
+  # Host & timezone - hostname will be set by individual host configs
+  # networking.hostName is configured per host
   time.timeZone = "Asia/Ho_Chi_Minh";
 
-  # Desktop & input (i3 via GDM)
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Note: GNOME Online Accounts and keyring removed - not needed for standalone email clients
-
-  services.xserver.windowManager.i3 = {
-    enable = true;
-    package = pkgs.i3-gaps;
-    extraPackages = with pkgs; [
-      dmenu
-      rofi
-      rofi-emoji
-      dunst
-      picom
-      polybarFull
-      (haskellPackages.greenclip)
-      xautolock
-      i3lock
-      betterlockscreen
-      pavucontrol
-      flameshot
-      xorg.xkill
-      # Tools for function keys
-      brightnessctl
-      pamixer
-      playerctl
-      # Provide an i3exit-compatible script from assets/script/i3exit
-      (pkgs.writeShellScriptBin "i3exit" (builtins.readFile ../assets/script/i3exit))
-    ];
-  };
-  services.libinput.enable = true;
-
-  # Enable ACPI support for laptop function keys
-  services.acpid.enable = true;
-  services.upower.enable = true;
-
-  # Enable brightness control for users
-  programs.light.enable = true;
-
-  # Keyboard: swap Caps Lock and Escape everywhere
-  services.xserver.xkb.options = "caps:swapescape";
-  # Apply the same XKB config on the Linux console (TTYs)
-  console.useXkbConfig = true;
-
-  # Input Method: fcitx5 + Unikey (Vietnamese Telex)
-  i18n.inputMethod = {
-    enable = true;
-    type = "fcitx5";
-    fcitx5 = {
-      # IM modules for GTK/Qt apps and config GUI
-      addons = with pkgs; [
-        fcitx5-unikey
-        fcitx5-gtk
-        (libsForQt5.fcitx5-qt)
-        (qt6Packages.fcitx5-qt)
-        fcitx5-configtool
-      ];
-      # Wayland frontend is optional; GNOME Wayland primarily uses GTK/Qt IM modules
-      # waylandFrontend = false; # default
-    };
-  };
+  # Common system configuration (desktop configs moved to modules/desktop-i3.nix)
 
   # Network
   networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.backend = "wpa_supplicant";
 
   # Sound (PipeWire)
   services.pipewire = {
@@ -139,16 +75,10 @@ in {
     wget
     curl
     vim
-    gnome-tweaks
-    psmisc # killall for polybar launch script
-    xorg.xrandr # xrandr used in i3 config
-    libnotify # notify-send
-
-    # Email clients - choose one or more based on your preference:
-    thunderbird # Full-featured GUI email client, excellent Gmail/Outlook support
-    # claws-mail         # Lightweight GTK email client, highly configurable
-    # neomutt            # Terminal-based, minimal, very powerful
-    # aerc               # Modern terminal-based email client
+    psmisc 
+    xorg.xrandr 
+    libnotify 
+    thunderbird 
   ];
 
   # Fonts: Nerd Fonts (Fira Code) + extras for Polybar/icons (25.05 uses pkgs.nerd-fonts.*)

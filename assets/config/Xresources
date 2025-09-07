@@ -7,8 +7,9 @@ Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 Xft.autohint: false
 
-! Cursor scaling
-Xcursor.size: 48
+! Cursor scaling - larger for HiDPI displays
+Xcursor.size: 64
+Xcursor.theme: Adwaita
 
 ! Terminal font settings
 URxvt.font: xft:FiraCode Nerd Font:size=12:antialias=true

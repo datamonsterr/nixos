@@ -19,14 +19,14 @@
     system = "x86_64-linux";
     lib = nixpkgs.lib;
     pkgs = import nixpkgs {inherit system;};
-    hostname = "nixos";
     username = "dat";
-  in {
-    nixosConfigurations.${hostname} = lib.nixosSystem {
-      inherit system;
+    
+    # Helper function to create host configurations
+    mkHost = hostname: homeConfig: {
+      system = system;
       modules = [
         ./modules/common.nix
-        ./hosts/${hostname}/configuration.nix
+        ./hosts/${hostname}/default.nix
 
         # Home-Manager as a NixOS module
         home-manager.nixosModules.home-manager
@@ -35,9 +35,15 @@
           home-manager.useUserPackages = true;
           # Back up existing dotfiles instead of failing activation
           home-manager.backupFileExtension = "backup";
-          home-manager.users.${username} = import ./hosts/${hostname}/home.nix;
+          home-manager.users.${username} = import homeConfig;
         }
       ];
+    };
+  in {
+    # Multiple host configurations
+    nixosConfigurations = {
+      laptop = lib.nixosSystem (mkHost "laptop" ./home/users/dat-laptop.nix);
+      pc = lib.nixosSystem (mkHost "pc" ./home/users/dat-pc.nix);
     };
 
     # Enable `nix fmt` for this repo

@@ -66,6 +66,10 @@ bindsym $mod+Shift+w exec --no-startup-id /etc/nixos/assets/script/random-wallpa
 # Input method toggle (fcitx5)
 bindsym $mod+z exec --no-startup-id "fcitx5-remote -t && notify-send 'Input Method' 'Toggled input method'"
 
+
+# Bluetooth manager
+bindsym $mod+Ctrl+b exec --no-startup-id blueman-manager && notify-send 'Bluetooth' 'Opening Bluetooth Manager'
+
 # Function Keys (Laptop Hardware Keys)
 # Volume controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && notify-send "Volume: $(pamixer --get-volume)%"

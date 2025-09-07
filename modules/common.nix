@@ -21,9 +21,9 @@ in {
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  
+
   # Note: GNOME Online Accounts and keyring removed - not needed for standalone email clients
-  
+
   services.xserver.windowManager.i3 = {
     enable = true;
     package = pkgs.i3-gaps;
@@ -143,9 +143,9 @@ in {
     psmisc # killall for polybar launch script
     xorg.xrandr # xrandr used in i3 config
     libnotify # notify-send
-    
+
     # Email clients - choose one or more based on your preference:
-    thunderbird          # Full-featured GUI email client, excellent Gmail/Outlook support
+    thunderbird # Full-featured GUI email client, excellent Gmail/Outlook support
     # claws-mail         # Lightweight GTK email client, highly configurable
     # neomutt            # Terminal-based, minimal, very powerful
     # aerc               # Modern terminal-based email client

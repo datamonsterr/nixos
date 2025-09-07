@@ -82,6 +82,11 @@ in {
     maven
     zathura
 
+    # Bluetooth tools
+    bluez
+    bluez-tools
+    blueman
+
     # polybar script deps (align with python313 to avoid conflicts)
     python313Packages.i3ipc
 
@@ -103,10 +108,16 @@ in {
 
     # Fonts
     fira-code
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.hack
 
     # Node pkg
     nodePackages.typescript
     nodePackages.mermaid-cli
+
+    # Cloud storage sync
+    rclone
   ];
 
   programs.zsh = {
@@ -181,6 +192,12 @@ in {
   programs.firefox = {
     enable = true;
     package = pkgs.firefox;
+  };
+
+  # Cloud storage with rclone
+  programs.rclone = {
+    enable = true;
+    package = pkgs.rclone;
   };
 
   # Your older .zshrc PATH/env equivalents
@@ -327,6 +344,28 @@ in {
 
     "zathura/zathurarc" = {
       source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/assets/config/zathura/zathurarc";
+    };
+
+    # rclone configuration
+    "rclone/rclone.conf" = {
+      text = ''
+        [gdrive]
+        type = drive
+        client_id =
+        client_secret =
+        scope = drive
+        root_folder_id =
+        service_account_file =
+
+        [onedrive]
+        type = onedrive
+        client_id =
+        client_secret =
+        region = global
+        drive_id =
+        drive_type = personal
+      '';
+      force = true;
     };
   };
 

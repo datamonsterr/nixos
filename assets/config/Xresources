@@ -1,4 +1,4 @@
-! HiDPI scaling configuration (144 DPI = 1.5x scaling)
+! HiDPI scaling configuration (144 DPI = 1.5x scaling for 2880x1800 display)
 Xft.dpi: 144
 Xft.antialias: true
 Xft.hinting: true
@@ -7,11 +7,11 @@ Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 Xft.autohint: false
 
-! Cursor scaling - larger for HiDPI displays
-Xcursor.size: 64
+! Cursor scaling - moderate size for 1.5x scaling
+Xcursor.size: 36
 Xcursor.theme: Adwaita
 
-! Terminal font settings
+! Terminal font settings (adjusted for 1.5x scaling)
 URxvt.font: xft:FiraCode Nerd Font:size=12:antialias=true
 URxvt.boldFont: xft:FiraCode Nerd Font:bold:size=12:antialias=true
 
@@ -23,4 +23,4 @@ URxvt.boldFont: xft:FiraCode Nerd Font:bold:size=12:antialias=true
 *lcdfilter: lcddefault
 
 ! Fix font rendering for older applications
-*.font: xft:FiraCode Nerd Font:size=12
+*.font: xft:FiraCode Nerd Font:size=14

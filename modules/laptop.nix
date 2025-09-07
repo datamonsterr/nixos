@@ -64,6 +64,7 @@
       scrollMethod = "twofinger";
       naturalScrolling = true;
       accelProfile = "adaptive";
+      accelSpeed = "2.0";
       disableWhileTyping = true;
     };
   };

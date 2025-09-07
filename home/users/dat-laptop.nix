@@ -32,6 +32,7 @@
     # Laptop-specific tools
     powertop
     acpi
+    xsettingsd
   ];
 
   # Laptop-specific dotfiles with HiDPI configurations
@@ -43,6 +44,8 @@
   home.file.".config/dunst/dunstrc".source = ../../assets/config/dunst/dunstrc;
   home.file.".config/ghostty/config".source = ../../assets/config/ghostty/config;
   home.file.".config/zathura/zathurarc".source = ../../assets/config/zathura/zathurarc;
+  home.file.".Xresources".source = ../../assets/config/Xresources;
+  home.file.".xsettingsd".source = ../../assets/config/xsettingsd.conf;
 
   # Desktop scripts
   home.file.".local/bin/i3exit" = {
@@ -62,11 +65,12 @@
     EDITOR = "nvim";
     BROWSER = "firefox";
     TERMINAL = "ghostty";
-    # HiDPI scaling for applications
-    GDK_SCALE = "1.4";
-    GDK_DPI_SCALE = "0.7";
+    # HiDPI scaling variables
+    GDK_SCALE = "2.0";
+    GDK_DPI_SCALE = "0.5";
     QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_SCALE_FACTOR = "1.4";
+    QT_SCALE_FACTOR = "2.0";
+    XCURSOR_SIZE = "48";
   };
 
   # XDG directories

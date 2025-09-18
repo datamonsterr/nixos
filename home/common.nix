@@ -14,6 +14,13 @@ in {
 
   programs.home-manager.enable = true;
 
+  # Environment variables
+  home.sessionVariables = {
+    JAVA_HOME = "${pkgs.jdk11}/lib/openjdk";
+    JDK_HOME = "${pkgs.jdk11}/lib/openjdk";
+    JAVA_VERSION = "11";
+  };
+
   # Common packages for all devices
   home.packages = with pkgs; [
     # Development tools
@@ -31,7 +38,6 @@ in {
     # Terminal applications
     ghostty
     bat
-    eza
     ripgrep
     fd
     fzf
@@ -53,6 +59,8 @@ in {
     vscode
     postman
     flameshot
+    obsidian
+    pomodoro-gtk
     
     # File management & media
     pcmanfm
@@ -129,17 +137,10 @@ in {
     defaultEditor = true;
   };
 
-  # VS Code with Docker extension
+  # VS Code with Java development extensions
   programs.vscode = {
     enable = true;
     package = pkgs.vscode;
-    profiles = {
-      "default" = {
-        extensions = with pkgs.vscode-extensions; [
-          ms-azuretools.vscode-docker
-        ];
-      };
-    };
   };
 
   # direnv for project-specific environments
@@ -167,22 +168,17 @@ in {
     syntaxHighlighting.enable = true;
     
     shellAliases = {
-      ll = "eza -la";
-      ls = "eza";
-      cat = "bat";
-      grep = "rg";
-      find = "fd";
+      ll = "ls -la";
+      la = "ls -la";
+      gdrive = "/etc/nixos/assets/script/rclone-manager.sh";
     };
     
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" "docker" "kubectl" "npm" "yarn" ];
-      theme = "robbyrussell";
-    };
-
-    initContent = lib.mkBefore ''
-      # Initialize starship
+    initContent = ''
+      # Starship prompt
       eval "$(starship init zsh)"
+      
+      # Custom functions
+      mkcd() { mkdir -p "$1" && cd "$1"; }
     '';
   };
 
@@ -208,27 +204,8 @@ in {
     force = true;
   };
 
-  # rclone configuration
-  home.file.".config/rclone/rclone.conf" = {
-    text = ''
-      [gdrive]
-      type = drive
-      client_id =
-      client_secret =
-      scope = drive
-      root_folder_id =
-      service_account_file =
-
-      [onedrive]
-      type = onedrive
-      client_id =
-      client_secret =
-      region = global
-      drive_id =
-      drive_type = personal
-    '';
-    force = true;
-  };
+  # rclone configuration - create config directory only
+  home.file.".config/rclone/.keep".text = "";
 
   # Common input method configuration
   i18n.inputMethod = {

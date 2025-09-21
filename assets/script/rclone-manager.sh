@@ -60,15 +60,36 @@ sync_folder() {
     local remote_path="$1"
     local local_path="$2"
     local direction="${3:-down}" # down or up
+    local execute="$4" # --execute flag
+    
+    # Check if --execute flag is present
+    local dry_run_flag=""
+    local action_text=""
+    if [ "$execute" != "--execute" ]; then
+        dry_run_flag="--dry-run"
+        action_text="${BLUE}[DRY RUN]${NC} "
+        echo -e "${BLUE}This is a dry run. Add --execute as the last argument to actually sync.${NC}"
+    else
+        action_text="${RED}[EXECUTING]${NC} "
+        echo -e "${RED}⚠️  EXECUTING REAL SYNC - This will modify files!${NC}"
+    fi
     
     if [ "$direction" = "down" ]; then
-        echo -e "${YELLOW}⬇️ Syncing from Google Drive: $remote_path → $local_path${NC}"
-        rclone sync "$GDRIVE:$remote_path" "$local_path" -P --dry-run
-        echo -e "${BLUE}This is a dry run. Add --execute to actually sync.${NC}"
+        echo -e "${YELLOW}⬇️ ${action_text}Syncing from Google Drive: $remote_path → $local_path${NC}"
+        rclone sync "$GDRIVE:$remote_path" "$local_path" -P $dry_run_flag
     else
-        echo -e "${YELLOW}⬆️ Syncing to Google Drive: $local_path → $remote_path${NC}"
-        rclone sync "$local_path" "$GDRIVE:$remote_path" -P --dry-run
-        echo -e "${BLUE}This is a dry run. Add --execute to actually sync.${NC}"
+        echo -e "${YELLOW}⬆️ ${action_text}Syncing to Google Drive: $local_path → $remote_path${NC}"
+        rclone sync "$local_path" "$GDRIVE:$remote_path" -P $dry_run_flag
+    fi
+    
+    if [ $? -eq 0 ]; then
+        if [ "$execute" = "--execute" ]; then
+            echo -e "${GREEN}✅ Sync completed successfully!${NC}"
+        else
+            echo -e "${GREEN}✅ Dry run completed. Use --execute to perform actual sync.${NC}"
+        fi
+    else
+        echo -e "${RED}❌ Sync failed!${NC}"
     fi
 }
 
@@ -113,10 +134,10 @@ case "$1" in
         ;;
     sync)
         if [ -z "$2" ] || [ -z "$3" ]; then
-            echo -e "${RED}Usage: $0 sync <remote_path> <local_path> [up|down]${NC}"
+            echo -e "${RED}Usage: $0 sync <remote_path> <local_path> [up|down] [--execute]${NC}"
             exit 1
         fi
-        sync_folder "$2" "$3" "$4"
+        sync_folder "$2" "$3" "$4" "$5"
         ;;
     search)
         if [ -z "$2" ]; then
@@ -145,7 +166,7 @@ case "$1" in
         echo -e "${YELLOW}📤 Transfer Commands:${NC}"
         echo "  download <remote> [local] - Download file from Google Drive"
         echo "  upload <local> [remote]   - Upload file to Google Drive"
-        echo "  sync <remote> <local> [up|down] - Sync folder (dry-run)"
+        echo "  sync <remote> <local> [up|down] [--execute] - Sync folder (default: dry-run)"
         echo ""
         echo -e "${YELLOW}ℹ️ Info Commands:${NC}"
         echo "  usage                    - Show Google Drive storage usage"
@@ -157,6 +178,8 @@ case "$1" in
         echo "  $0 download 'Study/file.pdf' ~/Downloads"
         echo "  $0 upload ~/document.pdf Study/"
         echo "  $0 search 'presentation'"
+        echo "  $0 sync Study ~/Study down      # Dry run: sync Study folder down"
+        echo "  $0 sync Study ~/Study down --execute  # Actually sync Study folder down"
         echo ""
         echo -e "${GREEN}💡 Tip: No mounting needed! Work directly with cloud files.${NC}"
         ;;

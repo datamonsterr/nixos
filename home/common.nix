@@ -207,6 +207,40 @@ in {
   # rclone configuration - create config directory only
   home.file.".config/rclone/.keep".text = "";
 
+  # Auto-sync service for Google Drive folders from config file
+  systemd.user.services."rclone-auto-sync" = {
+    Unit = {
+      Description = "Auto-sync Google Drive folders from config file";
+      After = [ "graphical-session-pre.target" ];
+    };
+    
+    Service = {
+      Type = "oneshot";
+      ExecStart = "/etc/nixos/assets/script/rclone-autosync.sh run-sync";
+      Environment = [
+        "PATH=/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin"
+      ];
+    };
+  };
+
+  # Timer for periodic sync every 30 minutes
+  systemd.user.timers."rclone-auto-sync" = {
+    Unit = {
+      Description = "Timer for Google Drive auto-sync every 30 minutes";
+      Requires = [ "rclone-auto-sync.service" ];
+    };
+    
+    Timer = {
+      OnStartupSec = "2min";  # 2 minutes after login
+      OnUnitActiveSec = "30min";  # Every 30 minutes after that
+      Persistent = true;
+    };
+    
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
+  };
+
   # Common input method configuration
   i18n.inputMethod = {
     enable = true;

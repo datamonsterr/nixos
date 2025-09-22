@@ -20,7 +20,7 @@
     lib = nixpkgs.lib;
     pkgs = import nixpkgs {inherit system;};
     username = "dat";
-    
+
     # Helper function to create host configurations
     mkHost = hostname: homeConfig: {
       system = system;

@@ -18,10 +18,10 @@
     "rclone-gdrive-personal" = {
       Unit = {
         Description = "RClone mount personal Google Drive";
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
+        After = ["graphical-session-pre.target"];
+        PartOf = ["graphical-session.target"];
       };
-      
+
       Service = {
         Type = "notify";
         ExecStartPre = "/run/current-system/sw/bin/mkdir -p %h/GoogleDrive-Personal";
@@ -35,9 +35,9 @@
           "PATH=/run/wrappers/bin/:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
         ];
       };
-      
+
       Install = {
-        WantedBy = [ "default.target" ];
+        WantedBy = ["default.target"];
       };
     };
 
@@ -45,10 +45,10 @@
     "rclone-onedrive-work" = {
       Unit = {
         Description = "RClone mount work OneDrive";
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
+        After = ["graphical-session-pre.target"];
+        PartOf = ["graphical-session.target"];
       };
-      
+
       Service = {
         Type = "notify";
         ExecStartPre = "/run/current-system/sw/bin/mkdir -p %h/OneDrive-Work";
@@ -62,9 +62,9 @@
           "PATH=/run/wrappers/bin/:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
         ];
       };
-      
+
       Install = {
-        WantedBy = [ "default.target" ];
+        WantedBy = ["default.target"];
       };
     };
 
@@ -72,10 +72,10 @@
     "rclone-onedrive-edu" = {
       Unit = {
         Description = "RClone mount education OneDrive";
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
+        After = ["graphical-session-pre.target"];
+        PartOf = ["graphical-session.target"];
       };
-      
+
       Service = {
         Type = "notify";
         ExecStartPre = "/run/current-system/sw/bin/mkdir -p %h/OneDrive-Education";
@@ -89,9 +89,9 @@
           "PATH=/run/wrappers/bin/:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin"
         ];
       };
-      
+
       Install = {
-        WantedBy = [ "default.target" ];
+        WantedBy = ["default.target"];
       };
     };
   };

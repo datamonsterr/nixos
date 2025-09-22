@@ -1,4 +1,9 @@
-{config, pkgs, lib, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ../../modules/desktop-i3.nix
@@ -12,10 +17,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # PC-specific configurations
-  
+
   # No display scaling needed for PC
-  services.xserver.dpi = 96;  # Standard DPI for desktop monitors
-  
+  services.xserver.dpi = 96; # Standard DPI for desktop monitors
+
   # Standard scaling for desktop
   environment.variables = {
     GDK_SCALE = "1";
@@ -28,7 +33,7 @@
   networking.networkmanager.enable = true;
   # If you want to disable WiFi entirely:
   # networking.networkmanager.wifi.backend = "none";
-  
+
   # Enable Bluetooth for PC (keyboards, mice, headphones)
   hardware.bluetooth = {
     enable = true;
@@ -51,15 +56,15 @@
   # Disable laptop-specific services
   services.tlp.enable = false;
   services.thermald.enable = false;
-  
+
   # Additional PC-specific packages
   environment.systemPackages = with pkgs; [
     # PC-specific tools
-    lm_sensors      # hardware monitoring
-    stress          # system stress testing
-    glxinfo         # OpenGL information
-    vulkan-tools    # Vulkan tools
-    pciutils        # PCI utilities
-    usbutils        # USB utilities
+    lm_sensors # hardware monitoring
+    stress # system stress testing
+    glxinfo # OpenGL information
+    vulkan-tools # Vulkan tools
+    pciutils # PCI utilities
+    usbutils # USB utilities
   ];
 }

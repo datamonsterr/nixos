@@ -75,11 +75,11 @@ in {
     wget
     curl
     vim
-    psmisc 
-    xorg.xrandr 
-    libnotify 
-    thunderbird 
-    appimage-run  # For running AppImages
+    psmisc
+    xorg.xrandr
+    libnotify
+    thunderbird
+    appimage-run # For running AppImages
     # Optional AppImage tools:
     # appimagelauncher  # GUI launcher for AppImages
     # appimagekit       # Tools for creating AppImages
@@ -88,7 +88,7 @@ in {
   # Enable AppImage support
   programs.appimage = {
     enable = true;
-    binfmt = true;  # This allows you to run AppImages directly
+    binfmt = true; # This allows you to run AppImages directly
   };
 
   # Fonts: Nerd Fonts (Fira Code) + extras for Polybar/icons (25.05 uses pkgs.nerd-fonts.*)

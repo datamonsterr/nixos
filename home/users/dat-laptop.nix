@@ -4,31 +4,31 @@
   lib,
   ...
 }: {
-  imports = [ ../common.nix ];
+  imports = [../common.nix];
 
   # Laptop-specific configuration for dat
-  
+
   # Laptop-specific packages and configuration
   home.packages = with pkgs; [
     # GUI applications
     firefox
     vscode
     gimp
-    
+
     # Media
     vlc
-    
+
     # Communication
     discord
-    
+
     # Development GUI tools
     postman
     dbeaver-bin
-    
+
     # System tools with GUI
     gparted
     filezilla
-    
+
     # Laptop-specific tools
     powertop
     acpi
@@ -38,7 +38,7 @@
   # Laptop-specific dotfiles with HiDPI configurations
   home.file.".config/i3/config".source = ../../assets/config-laptop/i3/config;
   home.file.".config/polybar".source = ../../assets/config-laptop/polybar;
-  
+
   # Common config files (no device-specific differences needed)
   home.file.".config/rofi".source = ../../assets/config/rofi;
   home.file.".config/dunst/dunstrc".source = ../../assets/config/dunst/dunstrc;
@@ -56,7 +56,7 @@
     source = ../../assets/script/random-wallpaper.sh;
     executable = true;
   };
-  
+
   # Wallpapers
   home.file.".local/share/backgrounds".source = ../../assets/backgrounds;
 

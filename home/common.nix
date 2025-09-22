@@ -26,7 +26,7 @@ in {
     # Development tools
     git
     zsh
-    
+
     # System utilities
     htop
     tree
@@ -34,7 +34,7 @@ in {
     curl
     unzip
     zip
-    
+
     # Terminal applications
     ghostty
     bat
@@ -43,7 +43,7 @@ in {
     fzf
     jq
     starship
-    
+
     # Languages & runtimes
     go
     python313
@@ -54,48 +54,51 @@ in {
     nodePackages.typescript
     nodePackages.mermaid-cli
     maven
-    
+
     # Development & productivity tools
     vscode
     postman
     flameshot
     obsidian
     pomodoro-gtk
-    
+
     # File management & media
     pcmanfm
     pavucontrol
     zathura
-    
+
     # AWS tools
     awscli2
     aws-sam-cli
-    
+
     # Container tools
     docker
     lazydocker
     docker-compose
     docker-buildx
     dive
-    
+
     # System tools
     direnv
     nix-direnv
-    nitrogen  # wallpaper management
-    
+    nitrogen # wallpaper management
+
     # Bluetooth tools
     bluez
     bluez-tools
     blueman
-    
+
     # Python packages for polybar scripts
     python313Packages.i3ipc
-    
+
     # Icon themes
     adwaita-icon-theme
-    
+
     # Cloud storage
     rclone
+
+    # Time control
+    activitywatch
   ];
 
   # Common programs configuration
@@ -166,17 +169,17 @@ in {
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    
+
     shellAliases = {
       ll = "ls -la";
       la = "ls -la";
       gdrive = "/etc/nixos/assets/script/rclone-manager.sh";
     };
-    
+
     initContent = ''
       # Starship prompt
       eval "$(starship init zsh)"
-      
+
       # Custom functions
       mkcd() { mkdir -p "$1" && cd "$1"; }
     '';
@@ -211,9 +214,9 @@ in {
   systemd.user.services."rclone-auto-sync" = {
     Unit = {
       Description = "Auto-sync Google Drive folders from config file";
-      After = [ "graphical-session-pre.target" ];
+      After = ["graphical-session-pre.target"];
     };
-    
+
     Service = {
       Type = "oneshot";
       ExecStart = "/etc/nixos/assets/script/rclone-autosync.sh run-sync";
@@ -227,20 +230,80 @@ in {
   systemd.user.timers."rclone-auto-sync" = {
     Unit = {
       Description = "Timer for Google Drive auto-sync every 30 minutes";
-      Requires = [ "rclone-auto-sync.service" ];
+      Requires = ["rclone-auto-sync.service"];
     };
-    
+
     Timer = {
-      OnStartupSec = "2min";  # 2 minutes after login
-      OnUnitActiveSec = "30min";  # Every 30 minutes after that
+      OnStartupSec = "2min"; # 2 minutes after login
+      OnUnitActiveSec = "30min"; # Every 30 minutes after that
       Persistent = true;
     };
-    
+
     Install = {
-      WantedBy = [ "timers.target" ];
+      WantedBy = ["timers.target"];
     };
   };
 
+  systemd.user.services.aw-server = {
+    Unit = {
+      Description = "ActivityWatch Server";
+      After = ["graphical-session.target"];
+      PartOf = ["graphical-session.target"];
+    };
+    Service = {
+      ExecStart = "${pkgs.activitywatch}/bin/aw-server --host 127.0.0.1 --port 5600";
+      Restart = "on-failure";
+      RestartSec = "5";
+    };
+    Install.WantedBy = ["graphical-session.target"];
+  };
+
+  systemd.user.services.aw-watcher-window = {
+    Unit = {
+      Description = "ActivityWatch Window Watcher (X11)";
+      After = ["aw-server.service" "graphical-session.target"];
+      Requires = ["aw-server.service"];
+      PartOf = ["graphical-session.target"];
+    };
+    Service = {
+      ExecStart = "${pkgs.activitywatch}/bin/aw-watcher-window";
+      Restart = "on-failure";
+      RestartSec = "10";
+    };
+    Install.WantedBy = ["graphical-session.target"];
+  };
+
+  systemd.user.services.aw-watcher-afk = {
+    Unit = {
+      Description = "ActivityWatch AFK Watcher";
+      After = ["aw-server.service" "graphical-session.target"];
+      Requires = ["aw-server.service"];
+      PartOf = ["graphical-session.target"];
+    };
+    Service = {
+      ExecStart = "${pkgs.activitywatch}/bin/aw-watcher-afk";
+      Restart = "on-failure";
+      RestartSec = "10";
+    };
+    Install.WantedBy = ["graphical-session.target"];
+  };
+
+  # Optional tray UI
+  systemd.user.services.aw-qt = {
+    Unit = {
+      Description = "ActivityWatch Tray";
+      After = ["aw-server.service" "graphical-session.target"];
+      Requires = ["aw-server.service"];
+      PartOf = ["graphical-session.target"];
+    };
+    Service = {
+      ExecStart = "${pkgs.activitywatch}/bin/aw-qt";
+      Restart = "on-failure";
+      RestartSec = "10";
+      Environment = ["DISPLAY=:0"];
+    };
+    Install.WantedBy = ["graphical-session.target"];
+  };
   # Common input method configuration
   i18n.inputMethod = {
     enable = true;

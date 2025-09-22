@@ -6,7 +6,7 @@
 }: {
   # Desktop i3 configuration with display scaling
 
-    # Desktop & input (i3 via GDM)
+  # Desktop & input (i3 via GDM)
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
 
@@ -82,7 +82,7 @@
       fade-in-step = 0.03;
       fade-out-step = 0.03;
       fade-delta = 10;
-      
+
       # Shadow
       shadow = true;
       shadow-radius = 7;
@@ -96,16 +96,16 @@
         "class_g = 'Cairo-clock'"
         "_GTK_FRAME_EXTENTS@:c"
       ];
-      
+
       # Opacity
       active-opacity = 1.0;
       inactive-opacity = 0.95;
-      
+
       # Blur
       blur-kern = "3x3box";
       blur-method = "kawase";
       blur-strength = 7;
-      
+
       # Other
       corner-radius = 0;
       detect-rounded-corners = true;

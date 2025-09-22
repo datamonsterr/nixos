@@ -4,10 +4,10 @@
   lib,
   ...
 }: {
-  imports = [ ../common.nix ];
+  imports = [../common.nix];
 
   # PC-specific configuration for dat
-  
+
   # PC-specific packages and configuration
   home.packages = with pkgs; [
     # GUI applications
@@ -15,18 +15,18 @@
     vscode
     gimp
     libreoffice
-    
+
     # Media
     vlc
     obs-studio
-    
+
     # Communication
     discord
-    
+
     # Development GUI tools
     postman
     dbeaver-bin
-    
+
     # System tools with GUI
     gparted
     filezilla
@@ -35,7 +35,7 @@
   # PC-specific dotfiles without HiDPI scaling
   home.file.".config/i3/config".source = ../../assets/config-pc/i3/config;
   home.file.".config/polybar".source = ../../assets/config-pc/polybar;
-  
+
   # Common config files (no device-specific differences needed)
   home.file.".config/rofi".source = ../../assets/config/rofi;
   home.file.".config/dunst/dunstrc".source = ../../assets/config/dunst/dunstrc;
@@ -51,7 +51,7 @@
     source = ../../assets/script/random-wallpaper.sh;
     executable = true;
   };
-  
+
   # Wallpapers
   home.file.".local/share/backgrounds".source = ../../assets/backgrounds;
 

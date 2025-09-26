@@ -288,26 +288,35 @@ in {
     Install.WantedBy = ["graphical-session.target"];
   };
 
-  # Optional tray UI
-  systemd.user.services.aw-qt = {
-    Unit = {
-      Description = "ActivityWatch Tray";
-      After = ["aw-server.service" "graphical-session.target"];
-      Requires = ["aw-server.service"];
-      PartOf = ["graphical-session.target"];
-    };
-    Service = {
-      ExecStart = "${pkgs.activitywatch}/bin/aw-qt";
-      Restart = "on-failure";
-      RestartSec = "10";
-      Environment = ["DISPLAY=:0"];
-    };
-    Install.WantedBy = ["graphical-session.target"];
-  };
   # Common input method configuration
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
     fcitx5.addons = with pkgs; [fcitx5-unikey];
+    fcitx5.settings = {
+      globalOptions = {
+        "Hotkey/TriggerKeys" = {
+          "0" = "";
+        };
+      };
+      inputMethod = {
+        "Groups/0" = {
+          "Name" = "Default";
+          "Default Layout" = "us";
+          "DefaultIM" = "keyboard-us";
+        };
+        "Groups/0/Items/0" = {
+          "Name" = "keyboard-us";
+          "Layout" = "";
+        };
+        "Groups/0/Items/1" = {
+          "Name" = "unikey";
+          "Layout" = "";
+        };
+        "GroupOrder" = {
+          "0" = "Default";
+        };
+      };
+    };
   };
 }

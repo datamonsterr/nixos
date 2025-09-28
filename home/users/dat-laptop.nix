@@ -56,6 +56,10 @@
     source = ../../assets/script/random-wallpaper.sh;
     executable = true;
   };
+  home.file.".local/bin/dunst-history.sh" = {
+    source = ../../assets/script/dunst-history.sh;
+    executable = true;
+  };
 
   # Wallpapers
   home.file.".local/share/backgrounds".source = ../../assets/backgrounds;

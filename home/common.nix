@@ -49,6 +49,7 @@ in {
     jq
     starship
     xclip
+    zoxide
 
     # Languages & runtimes
     go
@@ -189,9 +190,18 @@ in {
       # Starship prompt
       eval "$(starship init zsh)"
 
+      # Zoxide initialization with z alias
+      eval "$(zoxide init --cmd z zsh)"
+
       # Custom functions
       mkcd() { mkdir -p "$1" && cd "$1"; }
     '';
+  };
+
+  # Zoxide configuration
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   # Common dotfiles

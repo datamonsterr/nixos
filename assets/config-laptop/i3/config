@@ -54,6 +54,14 @@ bindsym $mod+v exec rofi -modi "clipboard:greenclip print" -show clipboard -run-
 bindsym $mod+F1 exec firefox https://calendar.google.com
 bindsym $mod+F2 exec pcmanfm
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
+
+# Dunst notification controls
+bindsym $mod+grave exec dunstctl close
+bindsym $mod+Shift+grave exec dunstctl close-all
+bindsym $mod+Ctrl+grave exec dunstctl history-pop
+bindsym $mod+Ctrl+Shift+grave exec dunstctl action
+bindsym $mod+Shift+n exec ~/.local/bin/dunst-history.sh
+
 bindsym Print --release exec "flameshot screen -p ~/Pictures/screenshots/"
 bindsym $mod+Print --release exec "flameshot gui -p ~/Pictures/screenshots/"
 bindsym $mod+Shift+Print --release exec "flameshot full -p ~/Pictures/screenshots/"

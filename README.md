@@ -106,6 +106,115 @@ Home Manager is integrated as a NixOS module and manages:
 - Device-specific scaling and environment variables
 - Desktop-specific applications and tools
 
+## Key Bindings Reference
+
+### Core i3 Keybindings ($mod = Super/Windows key)
+
+#### Basic Window Management
+- `$mod + Return` - Open terminal (Ghostty)
+- `$mod + Shift + q` - Kill focused window
+- `$mod + f` - Toggle fullscreen
+- `$mod + Shift + space` - Toggle floating/tiling
+- `$mod + space` - Switch focus between tiling/floating windows
+
+#### Window Navigation & Movement
+- `$mod + h/j/k/l` - Focus left/down/up/right (vim keys)
+- `$mod + Arrow Keys` - Focus in direction
+- `$mod + Shift + h/j/k/l` - Move window left/down/up/right
+- `$mod + Shift + Arrow Keys` - Move window in direction
+
+#### Layout Management
+- `$mod + s` - Stacking layout
+- `$mod + w` - Tabbed layout
+- `$mod + e` - Toggle split layout
+- `$mod + q` - Toggle split orientation
+- `$mod + Ctrl + h` - Split horizontally
+- `$mod + Ctrl + v` - Split vertically
+
+#### Workspace Management
+- `$mod + 1-8` - Switch to workspace 1-8
+- `$mod + Ctrl + 1-8` - Move container to workspace 1-8
+- `$mod + Shift + 1-8` - Move container to workspace and follow
+- `$mod + b` - Switch to previous workspace
+- `$mod + ]` - Next workspace
+- `$mod + [` - Previous workspace
+
+#### Application Launchers
+- `$mod + d` - Application launcher (rofi drun)
+- `$mod + x` - Command runner (rofi run)
+- `$mod + period` - Emoji picker (rofi emoji)
+- `$mod + t` - Window switcher (rofi window)
+- `$mod + v` - Clipboard manager (greenclip)
+
+#### Quick Application Access
+- `$mod + F1` - Open Firefox with Google Calendar
+- `$mod + F2` - Open file manager (pcmanfm)
+
+#### Notifications (Dunst)
+- `$mod + `` ` (backtick) - Close current notification
+- `$mod + Shift + `` ` - Close all notifications
+- `$mod + Ctrl + `` ` - Pop notification from history
+- `$mod + Ctrl + Shift + `` ` - Trigger notification action
+- `$mod + Shift + n` - Open notification history browser
+- `$mod + Shift + d` - Restart dunst
+
+#### Screenshots (Flameshot)
+- `Print` - Capture screen to ~/Pictures/screenshots/
+- `$mod + Print` - Interactive screenshot (GUI)
+- `$mod + Shift + Print` - Full screen screenshot
+
+#### System Controls
+- `$mod + 0` - System menu (lock, logout, reboot, shutdown)
+- `$mod + Ctrl + r` - Reload i3 config
+- `$mod + Shift + r` - Restart i3
+- `$mod + Ctrl + x` - Kill window (xkill)
+
+#### Borders & Appearance
+- `$mod + u` - Remove window borders
+- `$mod + y` - Pixel borders (2px)
+- `$mod + n` - Normal borders with title bar
+
+#### Gaps Management
+- `$mod + g` - Enter gaps mode
+  - `o` - Outer gaps mode
+  - `i` - Inner gaps mode
+  - `+/-` - Increase/decrease gaps
+  - `0` - Remove gaps
+
+#### Resize Mode
+- `$mod + r` - Enter resize mode
+  - `h/j/k/l` - Resize with vim keys (5px)
+  - `Arrow Keys` - Resize with arrows (20px)
+  - `Return/Escape` - Exit resize mode
+
+#### Scratchpad
+- `$mod + Shift + -` - Move window to scratchpad
+- `$mod + -` - Show/hide scratchpad
+
+#### Hardware Keys (Laptop)
+- `XF86AudioRaiseVolume/LowerVolume` - Volume up/down
+- `XF86AudioMute` - Toggle mute
+- `XF86MonBrightnessUp/Down` - Brightness up/down
+- `XF86AudioPlay/Next/Prev/Stop` - Media controls
+
+#### Miscellaneous
+- `$mod + a` - Focus parent container
+- `$mod + z` - Toggle input method (fcitx5)
+- `$mod + Ctrl + b` - Open Bluetooth manager
+- `$mod + Shift + w` - Change wallpaper
+- `$mod + Shift + s` - Toggle sticky window
+- `Caps_Lock` - Show CapsLock notification
+
+### Shell Aliases (ZSH)
+- `ll` / `la` - List files with details (`ls -la`)
+- `gdrive` - Launch rclone manager script
+- `z <pattern>` - Zoxide smart directory jumping
+- `vi` / `vim` - Launch neovim
+
+### Terminal Navigation
+- `z <directory>` - Jump to directory using zoxide
+- `zi <pattern>` - Interactive directory selection with zoxide
+
 ## Migration Notes
 
 This setup migrates from a single-host configuration to a multi-host setup while maintaining backward compatibility through the `nixos` host alias.

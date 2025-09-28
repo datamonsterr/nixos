@@ -1,8 +1,9 @@
 font-family = "FiraCode Nerd Font"
-font-size = 12
+font-size = 9 
+window-inherit-font-size = true
 
 # Opacity settings for picom compatibility
-background-opacity = 0.85
+background-opacity = 0.95
 window-decoration = false
 
 # Additional transparency settings

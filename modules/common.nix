@@ -54,6 +54,7 @@ in {
 
   # Shell & essentials
   programs.zsh.enable = true;
+  programs.nix-ld.enable = true; # For non-root nix
   programs.firefox = {
     enable = true;
     package = pkgs.firefox;
@@ -78,6 +79,9 @@ in {
     psmisc
     xorg.xrandr
     libnotify
+    xdg-utils # For xdg-open and protocol handlers
+    gnome-keyring # For secure credential storage
+    libsecret # Secret service library
     thunderbird
     appimage-run # For running AppImages
     # Optional AppImage tools:

@@ -48,6 +48,19 @@
   services.acpid.enable = true;
   services.upower.enable = true;
 
+  # XDG Desktop Portal support for protocol handlers
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
+    config.common.default = "*";
+  };
+
+  # GNOME Keyring for secure credential storage
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.gdm.enableGnomeKeyring = true;
+
   # Keyboard: swap Caps Lock and Escape everywhere
   services.xserver.xkb.options = "caps:swapescape";
   # Apply the same XKB config on the Linux console (TTYs)

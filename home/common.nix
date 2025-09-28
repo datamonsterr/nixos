@@ -19,7 +19,12 @@ in {
     JAVA_HOME = "${pkgs.jdk11}/lib/openjdk";
     JDK_HOME = "${pkgs.jdk11}/lib/openjdk";
     JAVA_VERSION = "11";
+    # Ensure VS Code can find Java tools
+    PATH = "$PATH:${pkgs.jdk11}/bin";
   };
+
+  # Create a stable symlink for VS Code Java configuration
+  home.file.".local/share/java/jdk11".source = "${pkgs.jdk11}/lib/openjdk";
 
   # Common packages for all devices
   home.packages = with pkgs; [
@@ -43,6 +48,7 @@ in {
     fzf
     jq
     starship
+    xclip
 
     # Languages & runtimes
     go
@@ -61,6 +67,7 @@ in {
     flameshot
     obsidian
     pomodoro-gtk
+    rars
 
     # File management & media
     pcmanfm
@@ -99,8 +106,10 @@ in {
 
     # Time control
     activitywatch
+    
+    # AI
+    copilot-cli
   ];
-
   # Common programs configuration
   programs.git = {
     enable = true;
@@ -112,7 +121,7 @@ in {
       push.default = "simple";
     };
   };
-
+  
   programs.ssh = {
     enable = true;
 

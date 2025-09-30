@@ -70,11 +70,11 @@
     BROWSER = "firefox";
     TERMINAL = "ghostty";
     # HiDPI scaling variables
-    GDK_SCALE = "2.0";
-    GDK_DPI_SCALE = "0.5";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_SCALE_FACTOR = "2.0";
-    XCURSOR_SIZE = "48";
+    GDK_SCALE = "1.0";
+    GDK_DPI_SCALE = "1.0";
+    QT_AUTO_SCREEN_SCALE_FACTOR = "0";
+    QT_SCALE_FACTOR = "1.0";
+    XCURSOR_SIZE = "36";
   };
 
   # XDG directories

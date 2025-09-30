@@ -54,6 +54,8 @@ bindsym $mod+period exec rofi -show emoji
 bindsym $mod+t exec rofi -show window
 bindsym $mod+v exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
 
+
+
 # Start Applications
 bindsym $mod+F1 exec firefox https://calendar.google.com
 bindsym $mod+F2 exec pcmanfm
@@ -249,16 +251,15 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-# Theme colors
+# Dark Theme colors (Catppuccin Mocha)
 # class                 border  bground text    indicator child_border
-client.focused          #c6d0f5 #c6d0f5 #303446 #c6d0f5   #c6d0f5
-client.focused_inactive #f2d5cf #f2d5cf #c6d0f5 #f2d5cf   #f2d5cf
-client.unfocused        #303446 #303446 #b5bfe2 #303446   #303446
-client.urgent           #44475A #ea999c #c6d0f5 #ea999c   #ea999c
-client.placeholder      #303446 #303446 #c6d0f5 #303446   #303446
+client.focused          #89b4fa #89b4fa #1e1e2e #89b4fa   #89b4fa
+client.focused_inactive #45475a #45475a #cdd6f4 #45475a   #45475a
+client.unfocused        #313244 #313244 #a6adc8 #313244   #313244
+client.urgent           #f38ba8 #f38ba8 #1e1e2e #f38ba8   #f38ba8
+client.placeholder      #313244 #313244 #cdd6f4 #313244   #313244
 
-
-client.background      #232634
+client.background      #1e1e2e
 
 #############################
 ### settings for i3-gaps: ###

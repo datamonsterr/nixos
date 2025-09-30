@@ -12,8 +12,8 @@ Xcursor.size: 36
 Xcursor.theme: Adwaita
 
 ! Terminal font settings (adjusted for 1.5x scaling)
-URxvt.font: xft:FiraCode Nerd Font:size=12:antialias=true
-URxvt.boldFont: xft:FiraCode Nerd Font:bold:size=12:antialias=true
+URxvt.font: xft:FiraCode Nerd Font:size=14:antialias=true
+URxvt.boldFont: xft:FiraCode Nerd Font:bold:size=14:antialias=true
 
 ! Better font rendering for legacy X11 applications
 *antialias: true

@@ -21,6 +21,10 @@ in {
     JAVA_VERSION = "11";
     # Ensure VS Code can find Java tools
     PATH = "$PATH:${pkgs.jdk11}/bin";
+    
+    # Force dark theme for all GTK applications
+    GTK_THEME = "Adwaita:dark";
+    QT_STYLE_OVERRIDE = "Adwaita-Dark";
   };
 
   # Create a stable symlink for VS Code Java configuration
@@ -99,8 +103,10 @@ in {
     # Python packages for polybar scripts
     python313Packages.i3ipc
 
-    # Icon themes
+    # Themes and icons
     adwaita-icon-theme
+    gnome-themes-extra
+    gtk-engine-murrine
 
     # Cloud storage
     rclone

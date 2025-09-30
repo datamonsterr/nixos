@@ -1,11 +1,20 @@
 # i3 config file (v4)
-# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+# Please see http://i3wm.org/docs/userguide.# Keep native context menus - just add a manual menu launcher
+bindsym $mod+m exec --no-startup-id /etc/nixos/assets/script/context-menu.shl for a complete reference!
 
 
 # Set mod key (Mod1=<Alt>, Mod4=<Super>)
 set $mod Mod4
 exec --no-startup-id xrdb -merge ~/.Xresources
-exec --no-startup-id xrdb -merge /etc/nixos/assets/config/Xresources
+exec --no-startup-id xrdb -merge /etc/nixos/assets# Dark Theme colors (Catppuccin Mocha)
+# class                 border  bground text    indicator child_border
+client.focused          #89b4fa #89b4fa #1e1e2e #89b4fa   #89b4fa
+client.focused_inactive #45475a #45475a #cdd6f4 #45475a   #45475a
+client.unfocused        #313244 #313244 #a6adc8 #313244   #313244
+client.urgent           #f38ba8 #f38ba8 #1e1e2e #f38ba8   #f38ba8
+client.placeholder      #313244 #313244 #cdd6f4 #313244   #313244
+
+client.background      #1e1e2e
 # Force cursor theme reload for HiDPI
 exec --no-startup-id xsetroot -cursor_name left_ptr
 
@@ -53,6 +62,10 @@ bindsym $mod+x exec --no-startup-id rofi -show run
 bindsym $mod+period exec rofi -show emoji
 bindsym $mod+t exec rofi -show window
 bindsym $mod+v exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
+# Context menu with jgmenu (right click and keyboard shortcut)
+bindsym --whole-window --border button3 exec --no-startup-id jgmenu_run
+bindsym $mod+m exec --no-startup-id jgmenu_run
 
 # Start Applications
 bindsym $mod+F1 exec firefox https://calendar.google.com

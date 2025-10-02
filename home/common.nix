@@ -35,6 +35,8 @@ in {
     # Development tools
     git
     zsh
+    bash
+    openssl
 
     # System utilities
     htop
@@ -217,7 +219,7 @@ in {
   # AWS configuration
   home.file.".aws/config" = {
     text = ''
-      [sso-session nuoa32]
+      [sso-session nuoa]
       sso_start_url = https://nuoa.awsapps.com/start
       sso_region = us-east-1
       sso_registration_scopes = sso:account:access

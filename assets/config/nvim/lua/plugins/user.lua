@@ -1,11 +1,32 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
-
--- You can also add or configure plugins by creating files in this `plugins/` folder
--- PLEASE REMOVE THE EXAMPLES YOU HAVE NO INTEREST IN BEFORE ENABLING THIS FILE
--- Here are some examples:
+-- Custom user plugins
 
 ---@type LazySpec
 return {
+  -- Surround text objects (ys, ds, cs commands)
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
+  },
+  
+  -- Hop for quick navigation (like easymotion)
+  {
+    "smoka7/hop.nvim",
+    version = "*",
+    event = "VeryLazy",
+    config = function()
+      require("hop").setup()
+    end,
+    keys = {
+      { "f", "<cmd>HopChar1CurrentLine<cr>", mode = "n", desc = "Hop to char in line" },
+      { "F", "<cmd>HopChar1<cr>", mode = "n", desc = "Hop to char" },
+    }
+  },
 
   -- == Examples of Adding Plugins ==
 

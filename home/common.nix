@@ -36,6 +36,10 @@ in {
     git
     zsh
     bash
+    gnumake
+    cmake
+    clang
+    clang-tools
     openssl
 
     # System utilities
@@ -152,7 +156,6 @@ in {
   # Neovim configuration
   programs.neovim = {
     enable = true;
-    package = pkgs.neovim-unwrapped;
     viAlias = true;
     vimAlias = true;
     defaultEditor = true;
@@ -213,7 +216,14 @@ in {
   };
 
   # Common dotfiles
-  home.file.".config/nvim".source = ../assets/config/nvim;
+  # Use onChange to copy nvim config so Lazy.nvim can write to lazy-lock.json
+  home.activation.nvimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD mkdir -p $HOME/.config/nvim
+    $DRY_RUN_CMD ${pkgs.rsync}/bin/rsync -av --chmod=u+w \
+      ${../assets/config/nvim}/ $HOME/.config/nvim/ \
+      --exclude lazy-lock.json
+  '';
+  
   home.file.".Xresources".source = ../assets/config/Xresources;
 
   # AWS configuration

@@ -1,7 +1,7 @@
 vim.opt.runtimepath:append(vim.fn.expand("~/.config/nvim"))
 
 if vim.g.vscode then
-  require("vscode-nvim/plugins")
+  -- VSCode Neovim extension - only load mappings and options
   require("vscode-nvim/mappings")
   require("vscode-nvim/options")
 else

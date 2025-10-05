@@ -87,6 +87,11 @@ in {
     # Optional AppImage tools:
     # appimagelauncher  # GUI launcher for AppImages
     # appimagekit       # Tools for creating AppImages
+    
+    # Power management tools
+    powertop # Monitor and optimize power consumption
+    acpi # ACPI information
+    lm_sensors # Hardware monitoring
   ];
 
   # Enable AppImage support
@@ -121,6 +126,8 @@ in {
       monospace = ["FiraCode Nerd Font"];
     };
   };
+
+
 
   # Ensure /etc/nixos is group-writable by nixos-config and new files inherit perms
   system.activationScripts.nixosEtcWritable = {

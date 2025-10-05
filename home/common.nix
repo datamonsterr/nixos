@@ -21,7 +21,13 @@ in {
     JAVA_VERSION = "11";
     # Ensure VS Code can find Java tools
     PATH = "$PATH:${pkgs.jdk11}/bin";
-    
+
+    # PostgreSQL development
+    PostgreSQL_ROOT = "${pkgs.postgresql}";
+    PostgreSQL_INCLUDE_DIR = "${pkgs.postgresql.dev}/include";
+    PostgreSQL_LIBRARY = "${pkgs.postgresql}/lib/libpq.so";
+    PKG_CONFIG_PATH = "${pkgs.postgresql.dev}/lib/pkgconfig:$PKG_CONFIG_PATH";
+
     # Force dark theme for all GTK applications
     GTK_THEME = "Adwaita:dark";
     QT_STYLE_OVERRIDE = "Adwaita-Dark";
@@ -119,9 +125,6 @@ in {
 
     # Time control
     activitywatch
-    
-    # AI
-    copilot-cli
   ];
   # Common programs configuration
   programs.git = {
@@ -134,7 +137,7 @@ in {
       push.default = "simple";
     };
   };
-  
+
   programs.ssh = {
     enable = true;
 
@@ -223,7 +226,7 @@ in {
       ${../assets/config/nvim}/ $HOME/.config/nvim/ \
       --exclude lazy-lock.json
   '';
-  
+
   home.file.".Xresources".source = ../assets/config/Xresources;
 
   # AWS configuration

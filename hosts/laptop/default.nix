@@ -22,11 +22,11 @@
 
   # HiDPI scaling for laptop screen (1.5x scaling)
   environment.variables = {
-    GDK_SCALE = "2"; 
+    GDK_SCALE = "2";
     GDK_DPI_SCALE = "0.6";
     QT_AUTO_SCREEN_SCALE_FACTOR = "0";
     QT_SCALE_FACTOR = "1.0";
-    XCURSOR_SIZE = "36"; 
+    XCURSOR_SIZE = "36";
   };
 
   # Additional laptop-specific overrides can go here

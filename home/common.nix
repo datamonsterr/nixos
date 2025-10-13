@@ -5,6 +5,20 @@
   ...
 }: let
   username = "dat";
+  
+  # Create a Python environment with all needed packages
+  pythonWithPackages = pkgs.python313.withPackages (ps: with ps; [
+    numpy
+    opencv4
+    pandas
+    matplotlib
+    jupyterlab
+    ipykernel
+    ipython
+    jupyter
+    notebook
+    uv
+  ]);
 in {
   # Common home-manager configuration for all devices
 
@@ -31,6 +45,10 @@ in {
     # Force dark theme for all GTK applications
     GTK_THEME = "Adwaita:dark";
     QT_STYLE_OVERRIDE = "Adwaita-Dark";
+
+    # Jupyter configuration
+    JUPYTER_CONFIG_DIR = "$HOME/.jupyter";
+    JUPYTER_DATA_DIR = "$HOME/.local/share/jupyter";
   };
 
   # Create a stable symlink for VS Code Java configuration
@@ -69,7 +87,7 @@ in {
 
     # Languages & runtimes
     go
-    python313
+    pythonWithPackages
     jdk11
     nodejs_22
     pnpm
@@ -77,6 +95,8 @@ in {
     nodePackages.typescript
     nodePackages.mermaid-cli
     maven
+    wireshark
+    feh
 
     # Development & productivity tools
     vscode
@@ -125,6 +145,8 @@ in {
 
     # Time control
     activitywatch
+    
+    teams-for-linux
   ];
   # Common programs configuration
   programs.git = {
@@ -198,6 +220,9 @@ in {
       ll = "ls -la";
       la = "ls -la";
       gdrive = "/etc/nixos/assets/script/rclone-manager.sh";
+      jupyter-manager = "/etc/nixos/assets/script/jupyter-manager.sh";
+      jlab = "jupyter lab";
+      jnb = "jupyter notebook";
     };
 
     initContent = ''
@@ -227,7 +252,18 @@ in {
       --exclude lazy-lock.json
   '';
 
+  # Setup Jupyter kernel for Python
+  home.activation.jupyterKernel = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    $DRY_RUN_CMD mkdir -p $HOME/.local/share/jupyter/kernels
+    if [ ! -d "$HOME/.local/share/jupyter/kernels/python3" ]; then
+      $DRY_RUN_CMD ${pythonWithPackages}/bin/python -m ipykernel install --user --name python3 --display-name "Python 3.13"
+    fi
+  '';
+
   home.file.".Xresources".source = ../assets/config/Xresources;
+
+  # Jupyter configuration
+  home.file.".jupyter/jupyter_notebook_config.py".source = ../assets/config/jupyter/jupyter_notebook_config.py;
 
   # AWS configuration
   home.file.".aws/config" = {

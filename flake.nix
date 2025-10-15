@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     # Optional: flake-compat for `nix build -f .` users
@@ -13,12 +14,17 @@
   outputs = {
     self,
     nixpkgs,
+    nixpkgs-unstable,
     home-manager,
     ...
   }: let
     system = "x86_64-linux";
     lib = nixpkgs.lib;
     pkgs = import nixpkgs {inherit system;};
+    pkgs-unstable = import nixpkgs-unstable {
+      inherit system;
+      config.allowUnfree = true;
+    };
     username = "dat";
 
     # Helper function to create host configurations
@@ -36,6 +42,10 @@
           # Back up existing dotfiles instead of failing activation
           home-manager.backupFileExtension = "backup";
           home-manager.users.${username} = import homeConfig;
+          # Pass unstable packages to home-manager
+          home-manager.extraSpecialArgs = {
+            inherit pkgs-unstable;
+          };
         }
       ];
     };

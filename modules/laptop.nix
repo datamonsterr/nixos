@@ -5,7 +5,7 @@
   ...
 }: {
   # Laptop-specific configurations
-  
+
   # Use latest kernel for better USB-C PD support
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -56,11 +56,11 @@
       # Additional power limiting (may help reduce charging requirements)
       # Force slower charging if hardware supports it
       CHARGE_THRESH_BAT0 = 1; # 0=fast charge, 1=slow charge (if supported)
-      
+
       # Limit turbo boost to reduce peak power draw
       CPU_BOOST_ON_AC = 1; # Allow turbo boost when charging
       CPU_BOOST_ON_BAT = 0; # Disable turbo boost on battery
-      
+
       # Additional USB power saving
       USB_BLACKLIST_BTUSB = 1;
       USB_BLACKLIST_PHONE = 1;
@@ -72,21 +72,21 @@
 
   # Enable thermald for thermal management
   services.thermald.enable = true;
-  
+
   # USB-C PD management
   services.udev.extraRules = ''
     # USB-C Power Delivery rules
     SUBSYSTEM=="typec", ACTION=="add", RUN+="${pkgs.coreutils}/bin/echo 'USB-C device connected'"
-    
+
     # Allow lower wattage USB-C chargers
     SUBSYSTEM=="power_supply", ATTR{type}=="USB_PD", ATTR{online}=="1", RUN+="${pkgs.coreutils}/bin/echo 'USB-C PD charger connected'"
   '';
-  
+
   # Enable USB-C related systemd services
   systemd.services.usb-pd-policy = {
     description = "USB-C Power Delivery Policy";
-    after = [ "multi-user.target" ];
-    wantedBy = [ "multi-user.target" ];
+    after = ["multi-user.target"];
+    wantedBy = ["multi-user.target"];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -99,12 +99,12 @@
 
   # Power monitoring tools
   environment.systemPackages = with pkgs; [
-    powertop    # Monitor power consumption
-    acpi        # Battery and power info
-    lm_sensors  # Hardware sensors
-    usbutils    # lsusb command
-    pciutils    # lspci command
-    dmidecode   # Hardware info
+    powertop # Monitor power consumption
+    acpi # Battery and power info
+    lm_sensors # Hardware sensors
+    usbutils # lsusb command
+    pciutils # lspci command
+    dmidecode # Hardware info
   ];
 
   # Enable Bluetooth for laptop
@@ -141,23 +141,23 @@
   # Laptop-specific hardware
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.enableAllFirmware = true;
-  
+
   # USB-C Power Delivery support
   hardware.firmware = with pkgs; [
-    linux-firmware  # Includes USB-C controller firmware
+    linux-firmware # Includes USB-C controller firmware
   ];
-  
+
   # Enable UCSI (USB Type-C Connector System Software Interface)
   boot.kernelModules = [
-    "ucsi_acpi"     # ACPI-based UCSI driver
-    "typec"         # USB Type-C subsystem
-    "typec_ucsi"    # UCSI driver
-    "pi3usb30532"   # Common USB-C switch driver
+    "ucsi_acpi" # ACPI-based UCSI driver
+    "typec" # USB Type-C subsystem
+    "typec_ucsi" # UCSI driver
+    "pi3usb30532" # Common USB-C switch driver
   ];
-  
+
   # Kernel parameters for better USB-C PD support
   boot.kernelParams = [
-    "usbcore.autosuspend=-1"  # Disable USB autosuspend initially
+    "usbcore.autosuspend=-1" # Disable USB autosuspend initially
   ];
 
   # Suspend configuration

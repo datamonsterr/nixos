@@ -1,24 +1,11 @@
 {
   config,
   pkgs,
+  pkgs-unstable,
   lib,
   ...
 }: let
   username = "dat";
-  
-  # Create a Python environment with all needed packages
-  pythonWithPackages = pkgs.python313.withPackages (ps: with ps; [
-    numpy
-    opencv4
-    pandas
-    matplotlib
-    jupyterlab
-    ipykernel
-    ipython
-    jupyter
-    notebook
-    uv
-  ]);
 in {
   # Common home-manager configuration for all devices
 
@@ -49,6 +36,9 @@ in {
     # Jupyter configuration
     JUPYTER_CONFIG_DIR = "$HOME/.jupyter";
     JUPYTER_DATA_DIR = "$HOME/.local/share/jupyter";
+    
+    # LOCALSTACK configuration
+    LOCALSTACK_AUTH_TOKEN = "ls-NIzUWaDa-9551-1401-giDo-SuPAKEVofe78";
   };
 
   # Create a stable symlink for VS Code Java configuration
@@ -87,7 +77,18 @@ in {
 
     # Languages & runtimes
     go
-    pythonWithPackages
+    python313
+    python313Packages.numpy
+    python313Packages.opencv4
+    python313Packages.pandas
+    python313Packages.matplotlib
+    python313Packages.uv
+    uv
+    python313Packages.jupyterlab
+    python313Packages.ipykernel
+    python313Packages.ipython
+    python313Packages.jupyter
+    python313Packages.notebook
     jdk11
     nodejs_22
     pnpm
@@ -121,6 +122,9 @@ in {
     docker-compose
     docker-buildx
     dive
+
+    # LocalStack Pro for local AWS development (from unstable for newer version)
+    pkgs-unstable.localstack
 
     # System tools
     direnv
@@ -256,7 +260,7 @@ in {
   home.activation.jupyterKernel = lib.hm.dag.entryAfter ["writeBoundary"] ''
     $DRY_RUN_CMD mkdir -p $HOME/.local/share/jupyter/kernels
     if [ ! -d "$HOME/.local/share/jupyter/kernels/python3" ]; then
-      $DRY_RUN_CMD ${pythonWithPackages}/bin/python -m ipykernel install --user --name python3 --display-name "Python 3.13"
+      $DRY_RUN_CMD ${pkgs.python313Packages.ipykernel}/bin/python -m ipykernel install --user --name python3 --display-name "Python 3.13"
     fi
   '';
 

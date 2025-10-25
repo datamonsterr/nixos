@@ -21,7 +21,7 @@ in {
     JDK_HOME = "${pkgs.jdk11}/lib/openjdk";
     JAVA_VERSION = "11";
     # Ensure VS Code can find Java tools
-    PATH = "$PATH:${pkgs.jdk11}/bin";
+    PATH = "$PATH:${pkgs.jdk11}/bin:/home/${username}/.local/bin";
 
     # PostgreSQL development
     PostgreSQL_ROOT = "${pkgs.postgresql}";
@@ -33,12 +33,13 @@ in {
     GTK_THEME = "Adwaita:dark";
     QT_STYLE_OVERRIDE = "Adwaita-Dark";
 
-    # Jupyter configuration
-    JUPYTER_CONFIG_DIR = "$HOME/.jupyter";
-    JUPYTER_DATA_DIR = "$HOME/.local/share/jupyter";
-    
     # LOCALSTACK configuration
     LOCALSTACK_AUTH_TOKEN = "ls-NIzUWaDa-9551-1401-giDo-SuPAKEVofe78";
+    
+    # AWS LocalStack configuration
+    AWS_ACCESS_KEY_ID = "test";
+    AWS_SECRET_ACCESS_KEY = "test";
+    AWS_DEFAULT_REGION = "ap-southeast-1";
   };
 
   # Create a stable symlink for VS Code Java configuration
@@ -55,6 +56,8 @@ in {
     clang
     clang-tools
     openssl
+    mosquitto
+    mqttx
 
     # System utilities
     htop
@@ -78,17 +81,7 @@ in {
     # Languages & runtimes
     go
     python313
-    python313Packages.numpy
-    python313Packages.opencv4
-    python313Packages.pandas
-    python313Packages.matplotlib
-    python313Packages.uv
     uv
-    python313Packages.jupyterlab
-    python313Packages.ipykernel
-    python313Packages.ipython
-    python313Packages.jupyter
-    python313Packages.notebook
     jdk11
     nodejs_22
     pnpm
@@ -122,9 +115,6 @@ in {
     docker-compose
     docker-buildx
     dive
-
-    # LocalStack Pro for local AWS development (from unstable for newer version)
-    pkgs-unstable.localstack
 
     # System tools
     direnv
@@ -224,9 +214,7 @@ in {
       ll = "ls -la";
       la = "ls -la";
       gdrive = "/etc/nixos/assets/script/rclone-manager.sh";
-      jupyter-manager = "/etc/nixos/assets/script/jupyter-manager.sh";
-      jlab = "jupyter lab";
-      jnb = "jupyter notebook";
+      awslocal = "aws --endpoint-url=http://localhost:4566";
     };
 
     initContent = ''
@@ -256,18 +244,7 @@ in {
       --exclude lazy-lock.json
   '';
 
-  # Setup Jupyter kernel for Python
-  home.activation.jupyterKernel = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    $DRY_RUN_CMD mkdir -p $HOME/.local/share/jupyter/kernels
-    if [ ! -d "$HOME/.local/share/jupyter/kernels/python3" ]; then
-      $DRY_RUN_CMD ${pkgs.python313Packages.ipykernel}/bin/python -m ipykernel install --user --name python3 --display-name "Python 3.13"
-    fi
-  '';
-
   home.file.".Xresources".source = ../assets/config/Xresources;
-
-  # Jupyter configuration
-  home.file.".jupyter/jupyter_notebook_config.py".source = ../assets/config/jupyter/jupyter_notebook_config.py;
 
   # AWS configuration
   home.file.".aws/config" = {
@@ -280,6 +257,13 @@ in {
       [profile nuoa-beta]
       sso_session = nuoa
       sso_account_id = 070888215368
+      sso_role_name = AdministratorAccess
+      region = ap-southeast-1
+      output = json
+      
+      [profile nuoa-gamma]
+      sso_session = nuoa
+      sso_account_id = 562455595688
       sso_role_name = AdministratorAccess
       region = ap-southeast-1
       output = json

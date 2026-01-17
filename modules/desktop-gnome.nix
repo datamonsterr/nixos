@@ -11,7 +11,7 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-  # Enable GNOME core apps and services
+f  # Enable GNOME core apps and services
   services.gnome.core-apps.enable = true; # Keep core utilities
   services.gnome.gnome-keyring.enable = true;
   
@@ -65,6 +65,12 @@
     # Additional tools
     dconf-editor
     gnome-extensions-cli
+    
+    # Cute cat cursor theme
+    bibata-cursors  # Modern cursor with cute designs
+    # Alternative cute cursors you can try:
+    # catppuccin-cursors
+    # phinger-cursors
   ];
 
   # Enable GNOME services
@@ -81,4 +87,14 @@
     # geary # Email client
     # totem # Video player
   ];
+
+  # Cursor configuration - smaller size
+  environment.variables = {
+    XCURSOR_SIZE = "24";  # Default is 24, you can use 16 or 20 for smaller
+  };
+  
+  # Set default cursor theme to Bibata (cute and modern)
+  environment.sessionVariables = {
+    XCURSOR_THEME = "Bibata-Modern-Classic";
+  };
 }

@@ -50,6 +50,8 @@
     EDITOR = "nvim";
     BROWSER = "firefox";
     TERMINAL = "ghostty";
+    XCURSOR_SIZE = "24";  # Smaller cursor (use 16 or 20 for even smaller)
+    XCURSOR_THEME = "Bibata-Modern-Classic";  # Cute cat-like cursor
   };
 
   # XDG directories

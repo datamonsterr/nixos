@@ -11,7 +11,7 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-f  # Enable GNOME core apps and services
+  # Enable GNOME core apps and services
   services.gnome.core-apps.enable = true; # Keep core utilities
   services.gnome.gnome-keyring.enable = true;
   

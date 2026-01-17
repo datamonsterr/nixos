@@ -117,23 +117,13 @@
       };
     };
   };
-  services.blueman.enable = true;
+  # Note: GNOME has built-in Bluetooth support, no need for blueman
 
   # WiFi configuration
   networking.networkmanager.wifi.backend = "wpa_supplicant";
 
-  # Touchpad support
-  services.libinput = {
-    enable = true;
-    touchpad = {
-      tapping = true;
-      scrollMethod = "twofinger";
-      naturalScrolling = true;
-      accelProfile = "adaptive";
-      accelSpeed = "2.0";
-      disableWhileTyping = true;
-    };
-  };
+  # Touchpad support (GNOME handles this, but ensure libinput is available)
+  # services.libinput configured in desktop module
 
   # Enable laptop brightness control
   programs.light.enable = true;

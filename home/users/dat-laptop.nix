@@ -32,49 +32,24 @@
     # Laptop-specific tools
     powertop
     acpi
-    xsettingsd
+    
+    # GNOME-specific tools
+    gnome-tweaks
+    dconf-editor
   ];
 
-  # Laptop-specific dotfiles with HiDPI configurations
-  home.file.".config/i3/config".source = ../../assets/config-laptop/i3/config;
-  home.file.".config/polybar".source = ../../assets/config-laptop/polybar;
-
-  # Common config files (no device-specific differences needed)
-  home.file.".config/rofi".source = ../../assets/config/rofi;
-  home.file.".config/dunst/dunstrc".source = ../../assets/config/dunst/dunstrc;
+  # Common config files (GNOME uses its own settings, but keep some useful configs)
   home.file.".config/ghostty/config".source = ../../assets/config/ghostty/config;
   home.file.".config/zathura/zathurarc".source = ../../assets/config/zathura/zathurarc;
-  home.file.".Xresources".source = ../../assets/config/Xresources;
-  home.file.".xsettingsd".source = ../../assets/config/xsettingsd.conf;
-
-  # Desktop scripts
-  home.file.".local/bin/i3exit" = {
-    source = ../../assets/script/i3exit;
-    executable = true;
-  };
-  home.file.".local/bin/random-wallpaper.sh" = {
-    source = ../../assets/script/random-wallpaper.sh;
-    executable = true;
-  };
-  home.file.".local/bin/dunst-history.sh" = {
-    source = ../../assets/script/dunst-history.sh;
-    executable = true;
-  };
 
   # Wallpapers
   home.file.".local/share/backgrounds".source = ../../assets/backgrounds;
 
-  # Laptop-specific environment variables with HiDPI scaling
+  # Laptop-specific environment variables with HiDPI scaling for GNOME
   home.sessionVariables = {
     EDITOR = "nvim";
     BROWSER = "firefox";
     TERMINAL = "ghostty";
-    # HiDPI scaling variables
-    GDK_SCALE = "1.0";
-    GDK_DPI_SCALE = "1.0";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "0";
-    QT_SCALE_FACTOR = "1.0";
-    XCURSOR_SIZE = "36";
   };
 
   # XDG directories

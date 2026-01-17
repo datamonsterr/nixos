@@ -6,7 +6,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ../../modules/desktop-i3.nix
+    ../../modules/desktop-gnome.nix
     ../../modules/laptop.nix
   ];
 
@@ -17,17 +17,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Laptop-specific display configuration with scaling
-  services.xserver.dpi = 144; # 1.5x scaling for 2880x1800 display
-
-  # HiDPI scaling for laptop screen (1.5x scaling)
-  environment.variables = {
-    GDK_SCALE = "2";
-    GDK_DPI_SCALE = "0.6";
-    QT_AUTO_SCREEN_SCALE_FACTOR = "0";
-    QT_SCALE_FACTOR = "1.0";
-    XCURSOR_SIZE = "36";
-  };
+  # GNOME will handle HiDPI scaling automatically for 2880x1800 display
+  # Set fractional scaling in GNOME Settings > Displays
+  # Or use gsettings: gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 
   # Additional laptop-specific overrides can go here
+  # Open port 8080 for Cardio server
+  networking.firewall.allowedTCPPorts = [8080];
 }

@@ -52,6 +52,7 @@
     gnomeExtensions.dash-to-dock
     gnomeExtensions.blur-my-shell
     gnomeExtensions.user-themes
+    gnomeExtensions.clipboard-indicator  # Clipboard manager with history
     
     # Utilities that work well with GNOME
     pavucontrol
@@ -66,11 +67,9 @@
     dconf-editor
     gnome-extensions-cli
     
-    # Cute cat cursor theme
-    bibata-cursors  # Modern cursor with cute designs
-    # Alternative cute cursors you can try:
-    # catppuccin-cursors
-    # phinger-cursors
+    # Cute cat cursor themes
+    (pkgs.catppuccin-cursors.mochaDark)  # Cute pastel cat-themed cursors
+    bibata-cursors  # Backup: Modern cursor with cute designs
   ];
 
   # Enable GNOME services
@@ -88,13 +87,13 @@
     # totem # Video player
   ];
 
-  # Cursor configuration - smaller size
+  # Cursor configuration - smaller size and cute cat theme
   environment.variables = {
-    XCURSOR_SIZE = "24";  # Default is 24, you can use 16 or 20 for smaller
+    XCURSOR_SIZE = "20";  # Smaller cursor (default is 24)
   };
   
-  # Set default cursor theme to Bibata (cute and modern)
+  # Set default cursor theme to Catppuccin (cute cat-themed cursors)
   environment.sessionVariables = {
-    XCURSOR_THEME = "Bibata-Modern-Classic";
+    XCURSOR_THEME = "catppuccin-mocha-dark-cursors";
   };
 }

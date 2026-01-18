@@ -94,8 +94,8 @@
     };
   };
 
-  # Battery monitoring
-  services.upower.enable = true;
+  # Battery monitoring (upower.enable is in desktop modules)
+  # services.upower.enable = true;  # Removed: already in desktop-gnome.nix and desktop-i3.nix
 
   # Power monitoring tools
   environment.systemPackages = with pkgs; [
@@ -122,8 +122,18 @@
   # WiFi configuration
   networking.networkmanager.wifi.backend = "wpa_supplicant";
 
-  # Touchpad support (GNOME handles this, but ensure libinput is available)
-  # services.libinput configured in desktop module
+  # Touchpad support - GNOME handles this via its own settings
+  # libinput.enable is already set in desktop modules (desktop-gnome.nix, desktop-i3.nix)
+  # For GNOME: Configure touchpad in Settings > Mouse & Touchpad
+  # For i3: The configuration below applies
+  services.libinput.touchpad = lib.mkIf (!config.services.xserver.desktopManager.gnome.enable) {
+    tapping = true;
+    scrollMethod = "twofinger";
+    naturalScrolling = true;
+    accelProfile = "adaptive";
+    accelSpeed = "0.5";
+    disableWhileTyping = true;
+  };
 
   # Enable laptop brightness control
   programs.light.enable = true;
